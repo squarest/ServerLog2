@@ -7,21 +7,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Chudofom on 07.07.16.
  */
 public final class ConnectToServer {
-    public static ConnectToServer _instance=null;
-    public void ConnectToServer(){};
+    public static Api _connection = null;
 
-    public static synchronized ConnectToServer getInstance() {
-        if (_instance == null)
-            _instance = new ConnectToServer();
-        return _instance;
+    private void ConnectToServer() {
     }
-    public static Api createConnection()
-    {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://52.58.41.125:8000/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
-        return retrofit.create(Api.class);
+    public static synchronized Api getInstance() {
+        if (_connection == null) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://52.58.41.125:8000/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            _connection = retrofit.create(Api.class);
+        }
+        return _connection;
     }
 }
