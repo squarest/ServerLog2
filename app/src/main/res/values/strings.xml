@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ServerLog</string>
+    <string name="UserId">User ID</string>
+    <string name="Password">Your Password</string>
+</resources>
