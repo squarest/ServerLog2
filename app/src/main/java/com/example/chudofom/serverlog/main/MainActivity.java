@@ -12,7 +12,7 @@ import com.jakewharton.rxbinding.widget.RxTextView;
 
 import rx.Observable;
 
-public class MainActivity extends AppCompatActivity implements MainView{
+public class MainActivity extends AppCompatActivity implements MainView {
     ActivityMainBinding binder;
     MainPresenter presenter;
 
@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements MainView{
         super.onCreate(savedInstanceState);
         binder = DataBindingUtil.setContentView(this, R.layout.activity_main);
         presenter = new MainPresenter(this);
+        binder.progressBar.setVisibility(ProgressBar.INVISIBLE);
         setListeners();
 
     }
@@ -41,15 +42,10 @@ public class MainActivity extends AppCompatActivity implements MainView{
 
     }
 
-    @Override
-    public void showProgress() {
-        binder.progressBar.setVisibility(ProgressBar.VISIBLE);
+    public void loadingIsStopped (boolean b) {
+        binder.setLoginbool(b);
     }
 
-    @Override
-    public void hideProgress() {
-        binder.progressBar.setVisibility(ProgressBar.INVISIBLE);
-    }
 
     private void setListeners() {
         binder.button.setOnClickListener(v -> presenter.butClicked());
@@ -59,8 +55,11 @@ public class MainActivity extends AppCompatActivity implements MainView{
         Observable<Boolean> pasValidation = RxTextView.textChanges(binder.editPassword)
                 .map(charSequence -> charSequence.toString())
                 .map(s -> s.length() == 7);
-        Observable.combineLatest (idValidation, pasValidation, (a, b) -> a && b)
-                .subscribe(b->binder.setLoginbool(b));
+        Observable.combineLatest(idValidation, pasValidation, (a, b) -> a && b)
+                .subscribe(b -> {
+                    binder.setLoginbool(b);
+                    binder.setAddcompleted(b);
+                });
     }
 
 }

@@ -22,20 +22,19 @@ public class MainPresenter implements IMainPresenter {
 
     @Override
     public void butClicked() {
-        mainView.showProgress();
+        mainView.loadingIsStopped(false);
         User user = new User("agitator", mainView.getId() + mainView.getPas(), "490fbfe28a7d157a");
-        ConnectToServer.getInstance().createConnection()
-                .sendInf(user).enqueue(new Callback<LoginResponse>() {
+        ConnectToServer.getInstance().sendInf(user).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                mainView.hideProgress();
-                Log.d("TAG", response.body().sessionId + "");
+                mainView.loadingIsStopped(true);
                 mainView.showInf(response.body().sessionId + "");
+                Log.d("TAG", response.body().sessionId + "");
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                mainView.hideProgress();
+                mainView.loadingIsStopped(true);
                 mainView.showInf("Все плохо");
                 Log.d("TAG", t.getMessage() + "");
             }
