@@ -3,7 +3,11 @@ package com.example.chudofom.serverlog.main;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ProgressBar;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.example.chudofom.serverlog.R;
@@ -15,15 +19,29 @@ import rx.Observable;
 public class MainActivity extends AppCompatActivity implements MainView {
     ActivityMainBinding binder;
     MainPresenter presenter;
+    RotateAnimation rotateAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binder = DataBindingUtil.setContentView(this, R.layout.activity_main);
         presenter = new MainPresenter(this);
-        binder.progressBar.setVisibility(ProgressBar.INVISIBLE);
+        rotate();
         setListeners();
 
+    }
+
+    public void rotate() {
+        rotateAnimation = new RotateAnimation(0f, 360f, RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+                RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+        rotateAnimation.setInterpolator(new LinearInterpolator());
+        rotateAnimation.setRepeatCount(Animation.INFINITE);
+        rotateAnimation.setDuration(700);
+    }
+
+    void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(this.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override
@@ -42,8 +60,20 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     }
 
-    public void loadingIsStopped (boolean b) {
-        binder.setLoginbool(b);
+    @Override
+    public void showProgress() {
+
+        binder.setLoginbool(false);
+        hideKeyboard(binder.view);
+        binder.rotateShape.startAnimation(rotateAnimation);
+
+    }
+
+    @Override
+    public void hideProgress() {
+        binder.setLoginbool(true);
+        hideKeyboard(binder.view);
+        binder.rotateShape.setAnimation(null);
     }
 
 

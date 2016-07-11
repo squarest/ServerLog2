@@ -7,5 +7,7 @@ public interface MainView{
     String getId();
     String getPas();
     void showInf(String info);
-    void loadingIsStopped(boolean started_or_stoped);
+    void showProgress();
+    void hideProgress();
+
 }
