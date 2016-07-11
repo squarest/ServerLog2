@@ -7,12 +7,11 @@
     <data>
 
         <variable
-            name="loginbool"
+            name="buttonEnable"
             type="boolean" />
-
         <variable
-            name="addcompleted"
-            type="boolean" />
+            name="editTextEnable"
+            type="boolean"/>
     </data>
 
     <RelativeLayout
@@ -44,7 +43,6 @@
             android:src="@drawable/shape"
             android:layout_weight="2"
             android:layout_gravity="center"
-            android:scaleType="center"
             android:id="@+id/rotate_shape">
 
         </ImageView>
@@ -100,6 +98,7 @@
                         android:background="@null"
                         android:digits="0123456789"
                         android:hint="@string/UserId"
+                        android:enabled="@{editTextEnable}"
                         android:inputType="number"
                         android:maxLength="7"
                         android:textColor="#000000" />
@@ -140,6 +139,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="20dp"
                         android:layout_weight="1"
+                        android:enabled="@{editTextEnable}"
                         android:background="@null"
                         android:digits="0123456789"
                         android:hint="@string/Password"
@@ -155,7 +155,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/but_color"
 
-                    android:enabled="@{loginbool}"
+                    android:enabled="@{buttonEnable}"
                     android:longClickable="false"
 
                     android:text="OK"

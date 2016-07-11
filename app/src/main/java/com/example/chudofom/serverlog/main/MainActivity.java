@@ -5,8 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
@@ -19,24 +18,19 @@ import rx.Observable;
 public class MainActivity extends AppCompatActivity implements MainView {
     ActivityMainBinding binder;
     MainPresenter presenter;
-    RotateAnimation rotateAnimation;
+    Animation animation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binder = DataBindingUtil.setContentView(this, R.layout.activity_main);
         presenter = new MainPresenter(this);
-        rotate();
+        animation=AnimationUtils.loadAnimation(this,R.anim.rotate);
+        animation.setRepeatCount(Animation.INFINITE);
         setListeners();
+        binder.rotateShape.startAnimation(animation);
+        binder.setEditTextEnable(true);
 
-    }
-
-    public void rotate() {
-        rotateAnimation = new RotateAnimation(0f, 360f, RotateAnimation.RELATIVE_TO_SELF, 0.5f,
-                RotateAnimation.RELATIVE_TO_SELF, 0.5f);
-        rotateAnimation.setInterpolator(new LinearInterpolator());
-        rotateAnimation.setRepeatCount(Animation.INFINITE);
-        rotateAnimation.setDuration(700);
     }
 
     void hideKeyboard(View view) {
@@ -63,15 +57,17 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void showProgress() {
 
-        binder.setLoginbool(false);
+        binder.setButtonEnable(false);
+        binder.setEditTextEnable(false);
         hideKeyboard(binder.view);
-        binder.rotateShape.startAnimation(rotateAnimation);
+        binder.rotateShape.startAnimation(animation);
 
     }
 
     @Override
     public void hideProgress() {
-        binder.setLoginbool(true);
+        binder.setButtonEnable(true);
+        binder.setEditTextEnable(true);
         hideKeyboard(binder.view);
         binder.rotateShape.setAnimation(null);
     }
@@ -87,8 +83,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 .map(s -> s.length() == 7);
         Observable.combineLatest(idValidation, pasValidation, (a, b) -> a && b)
                 .subscribe(b -> {
-                    binder.setLoginbool(b);
-                    binder.setAddcompleted(b);
+                    binder.setButtonEnable(b);
                 });
     }
 
