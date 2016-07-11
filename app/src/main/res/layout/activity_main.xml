@@ -9,167 +9,167 @@
         <variable
             name="buttonEnable"
             type="boolean" />
+
         <variable
             name="editTextEnable"
-            type="boolean"/>
+            type="boolean" />
     </data>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#ff8000">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#ff6800">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Enter a code"
-                android:textAlignment="center"
-                android:textColor="#fff"
-                android:textSize="25dp"
-                android:layout_alignBottom="@+id/toolbar" />
-
-        </android.support.v7.widget.Toolbar>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/shape"
-            android:layout_weight="2"
-            android:layout_gravity="center"
-            android:id="@+id/rotate_shape">
-
-        </ImageView>
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/card_view"
-            android:layout_width="270dp"
-            android:layout_height="170dp"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:background="#ffffff"
-
-            card_view:cardCornerRadius="3dp"
-            card_view:cardUseCompatPadding="true"
-            android:layout_weight="1">
 
             <LinearLayout
-                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#ffffff"
-                android:gravity="center"
+                android:background="@color/background"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:orientation="horizontal">
+                    android:background="#ff6800">
 
-                    <ImageView
-                        android:id="@+id/imageView"
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_weight="4"
-                        android:src="@drawable/ic_perm_identity_black_24dp" />
+                        android:layout_alignBottom="@+id/toolbar"
+                        android:text="Enter a code"
+                        android:textAlignment="center"
+                        android:textColor="#fff"
+                        android:textSize="25dp" />
 
-                    <android.view.View
-                        android:id="@+id/view2"
-                        android:layout_width="1dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:background="#000" />
+                </android.support.v7.widget.Toolbar>
 
-                    <EditText
-                        android:id="@+id/idEmail"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:digits="0123456789"
-                        android:hint="@string/UserId"
-                        android:enabled="@{editTextEnable}"
-                        android:inputType="number"
-                        android:maxLength="7"
-                        android:textColor="#000000" />
-
-                </LinearLayout>
-
-                <android.view.View
-                    android:id="@+id/view"
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="#000" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/rotate_shape"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:orientation="horizontal">
+                    android:layout_gravity="center"
+                    android:layout_weight="2"
+                    android:src="@drawable/shape">
 
-                    <ImageView
-                        android:id="@+id/imageView2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_weight="4"
-                        android:src="@drawable/ic_https_black_24dp" />
+                </ImageView>
 
-                    <android.view.View
-                        android:id="@+id/view3"
-                        android:layout_width="1dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:background="#000" />
-
-                    <EditText
-                        android:id="@+id/editPassword"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
-                        android:layout_weight="1"
-                        android:enabled="@{editTextEnable}"
-                        android:background="@null"
-                        android:digits="0123456789"
-                        android:hint="@string/Password"
-                        android:inputType="number"
-                        android:maxLength="7"
-                        android:textColor="#000" />
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                <android.support.v7.widget.CardView
+                    android:id="@+id/card_view"
+                    android:layout_width="270dp"
+                    android:layout_height="170dp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@drawable/but_color"
 
-                    android:enabled="@{buttonEnable}"
-                    android:longClickable="false"
+                    android:background="#ffffff"
+                    card_view:cardCornerRadius="3dp"
+                    card_view:cardUseCompatPadding="true">
 
-                    android:text="OK"
-                    android:textColor="#fff" />
+                    <LinearLayout
+                        android:id="@+id/linearLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#ffffff"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/imageView"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="15dp"
+                                android:layout_weight="4"
+                                android:src="@drawable/ic_perm_identity_black_24dp" />
+
+                            <android.view.View
+                                android:id="@+id/view2"
+                                android:layout_width="1dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
+                                android:background="#000" />
+
+                            <EditText
+                                android:id="@+id/idEmail"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="20dp"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:digits="0123456789"
+                                android:enabled="@{editTextEnable}"
+                                android:hint="@string/UserId"
+                                android:inputType="number"
+                                android:maxLength="7"
+                                android:textColor="#000000" />
+
+                        </LinearLayout>
+
+                        <android.view.View
+                            android:id="@+id/view"
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:background="#000" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/imageView2"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="15dp"
+                                android:layout_weight="4"
+                                android:src="@drawable/ic_https_black_24dp" />
+
+                            <android.view.View
+                                android:id="@+id/view3"
+                                android:layout_width="1dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
+                                android:background="#000" />
+
+                            <EditText
+                                android:id="@+id/editPassword"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="20dp"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:digits="0123456789"
+                                android:enabled="@{editTextEnable}"
+                                android:hint="@string/Password"
+                                android:inputType="number"
+                                android:maxLength="7"
+                                android:textColor="#000" />
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/button"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/but_color"
+
+                            android:enabled="@{buttonEnable}"
+                            android:longClickable="false"
+
+                            android:text="OK"
+                            android:textColor="#fff" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v4.widget.Space
+                    android:id="@+id/view4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5" />
             </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v4.widget.Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/view4"
-            android:layout_weight="5" />
-    </LinearLayout>
-    </RelativeLayout>
-
 
 </layout>

@@ -3,12 +3,11 @@ package com.example.chudofom.serverlog.main;
 import android.util.Log;
 
 import com.example.chudofom.serverlog.ConnectToServer;
-import com.example.chudofom.serverlog.LoginResponse;
 import com.example.chudofom.serverlog.User;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Chudofom on 06.07.16.
@@ -23,30 +22,21 @@ public class MainPresenter implements IMainPresenter {
     @Override
     public void butClicked() {
         mainView.showProgress();
-            User user = new User("agitator", mainView.getId() + mainView.getPas(), "490fbfe28a7d157a");
+        User user = new User("agitator", mainView.getId() + mainView.getPas(), "490fbfe28a7d157a");
 
-            ConnectToServer.getInstance().sendInf(user).enqueue(new Callback<LoginResponse>() {
-                @Override
-
-                public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                    if (response.body() != null) {
-                        mainView.hideProgress();
-                        mainView.showInf(response.body().sessionId + "");
-                        Log.d("TAG", response.body().sessionId + "");
-                    }
-//                    else
-//                    {
-//                        mainView.hideProgress();
-//                        mainView.showInf("null user");
-//                    }
-                }
-
-                @Override
-                public void onFailure(Call<LoginResponse> call, Throwable t) {
-                    mainView.hideProgress();
-                    mainView.showInf("Все плохо");
-                    Log.d("TAG", t.getMessage() + "");
-                }
-            });
-}
+        Subscription connection = ConnectToServer.getInstance().sendInf(user)
+                .map(obs -> obs.sessionId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnTerminate(()->mainView.hideProgress())
+                .subscribe(sessionId -> {
+                            mainView.showInf(sessionId + "");
+                            Log.d("TAG", sessionId + "");
+                        },
+                        throwable ->
+                        {
+                            Log.d("TAG",throwable.getMessage());
+                            mainView.showInf("all bad");
+                        });
+    }
 }
