@@ -23,18 +23,22 @@ public class MainPresenter implements IMainPresenter {
     @Override
     public void butClicked() {
         mainView.showProgress();
-        try {
             User user = new User("agitator", mainView.getId() + mainView.getPas(), "490fbfe28a7d157a");
 
             ConnectToServer.getInstance().sendInf(user).enqueue(new Callback<LoginResponse>() {
                 @Override
 
                 public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                    if (response.body().sessionId != null) {
+                    if (response.body() != null) {
                         mainView.hideProgress();
                         mainView.showInf(response.body().sessionId + "");
                         Log.d("TAG", response.body().sessionId + "");
                     }
+//                    else
+//                    {
+//                        mainView.hideProgress();
+//                        mainView.showInf("null user");
+//                    }
                 }
 
                 @Override
@@ -44,11 +48,5 @@ public class MainPresenter implements IMainPresenter {
                     Log.d("TAG", t.getMessage() + "");
                 }
             });
-        }
-        catch (Exception ex)
-        {
-            Log.d("EX", ex.getMessage());
-        }
-
-    }
+}
 }

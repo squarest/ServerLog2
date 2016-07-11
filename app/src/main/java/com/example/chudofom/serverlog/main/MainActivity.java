@@ -25,16 +25,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
         super.onCreate(savedInstanceState);
         binder = DataBindingUtil.setContentView(this, R.layout.activity_main);
         presenter = new MainPresenter(this);
-        animation=AnimationUtils.loadAnimation(this,R.anim.rotate);
-        animation.setRepeatCount(Animation.INFINITE);
+        animation = AnimationUtils.loadAnimation(this, R.anim.rotate);
         setListeners();
-        binder.rotateShape.startAnimation(animation);
         binder.setEditTextEnable(true);
 
     }
 
     void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(this.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
