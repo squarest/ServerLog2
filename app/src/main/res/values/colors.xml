@@ -6,4 +6,5 @@
     <color name="enable_color">#f00000</color>
     <color name="disable_color">#80f00000</color>
     <color name="background">#ff8000</color>
+    <color name="toolbar_background">#ff6800</color>
 </resources>

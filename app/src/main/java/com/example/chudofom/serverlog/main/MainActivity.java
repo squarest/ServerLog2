@@ -1,5 +1,6 @@
 package com.example.chudofom.serverlog.main;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.example.chudofom.serverlog.MenuActivity;
 import com.example.chudofom.serverlog.R;
 import com.example.chudofom.serverlog.databinding.ActivityMainBinding;
 import com.jakewharton.rxbinding.widget.RxTextView;
@@ -28,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
         animation = AnimationUtils.loadAnimation(this, R.anim.rotate);
         setListeners();
         binder.setEditTextEnable(true);
+        Intent intent=new Intent(this, MenuActivity.class);
+        startActivity(intent);
 
     }
 
