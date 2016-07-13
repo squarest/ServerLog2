@@ -1,13 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.chudofom.serverlog.PersonalAreaActivity">
+    android:background="@color/background"
+    android:orientation="vertical">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/account_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/toolbar_background"/>
+        android:background="@color/toolbar_background" />
 
-</RelativeLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/toolbar_background"
+        android:paddingLeft="15dp"
+        android:scaleType="fitStart"
+        android:src="@drawable/person_ic" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/toolbar_background"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:text="Михайленко Василий Степанович"
+            android:textColor="#fff"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:text="25 лет"
+            android:textColor="#fff"
+            android:textSize="17dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <ImageView
+            style="@style/AppTheme.RowImageView"
+            android:src="@drawable/ic_phone" />
+
+        <TextView
+            android:text="8 (888) 88 - 88 -888"
+            style="@style/AppTheme.RowTextView" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.25dp"
+        android:layout_marginLeft="55dp"
+        android:background="#fff" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <ImageView
+            style="@style/AppTheme.RowImageView"
+            android:src="@drawable/ic_mail" />
+
+        <TextView
+            style="@style/AppTheme.RowTextView"
+            android:text="blablabla@mail.ru" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.25dp"
+        android:layout_marginLeft="55dp"
+        android:background="#fff" />
+
+    <LinearLayout
+        android:id="@+id/userLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <ImageView
+            style="@style/AppTheme.RowImageView"
+            android:src="@drawable/ic_city" />
+
+        <TextView
+            style="@style/AppTheme.RowTextView"
+            android:text="Екатеринбург"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.25dp"
+        android:layout_marginLeft="55dp"
+        android:background="#fff" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+</LinearLayout>

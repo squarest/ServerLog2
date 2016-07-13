@@ -9,4 +9,22 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-</resources>
+    <style name="AppTheme.RowImageView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:layout_marginRight">15dp</item>
+        <item name="android:layout_weight">6</item>
+    </style>
+
+    <style name="AppTheme.RowTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">20dp</item>
+    </style>
+</style>
+
+    </resources>
