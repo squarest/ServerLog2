@@ -9,5 +9,5 @@ import rx.Observable;
  */
 public interface Api {
     @POST("agent/login/")
-    Observable<LoginResponse> sendInf(@Body User user);
+    Observable<LoginResponse> sendInf(@Body UserLogin user);
 }

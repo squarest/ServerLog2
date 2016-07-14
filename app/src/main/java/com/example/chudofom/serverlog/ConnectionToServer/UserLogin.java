@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by Chudofom on 06.07.16.
  */
-public class User {
+public class UserLogin {
     @SerializedName("app_name")
     String mName;
 
@@ -15,7 +15,7 @@ public class User {
     @SerializedName("device_id")
     String mId;
 
-    public User(String  name, String key, String id) {
+    public UserLogin(String  name, String key, String id) {
         this.mName = name;
         this.mKey = key;
         this.mId = id;

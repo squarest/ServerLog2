@@ -22,7 +22,7 @@ public final class ConnectToServer {
 //            _connection = retrofit.create(Api.class);
             Api fakeApi = new Api() {
                 @Override
-                public Observable<LoginResponse> sendInf(@Body User user) {
+                public Observable<LoginResponse> sendInf(@Body UserLogin user) {
                     return Observable.just(null);
                 }
             };
