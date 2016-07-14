@@ -2,4 +2,12 @@
     <string name="app_name">ServerLog</string>
     <string name="UserId">User ID</string>
     <string name="Password">Your Password</string>
+    <string name="change_text_view">Изменить</string>
+    <string name="surname">Фамилия</string>
+    <string name="name">Имя</string>
+    <string name="father_name">Отчество</string>
+    <string name="year">Возраст</string>
+    <string name="number">Телефон</string>
+    <string name="email">Электронная почта</string>
+    <string name="city">Город</string>
 </resources>

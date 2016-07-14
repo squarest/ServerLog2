@@ -13,37 +13,42 @@
         android:layout_height="wrap_content"
         android:background="@color/toolbar_background"
         android:orientation="vertical">
+
         <android.support.v7.widget.Toolbar
             android:id="@+id/account_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize" />
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_image"
-            android:layout_width="78dp"
-            android:layout_height="78dp"
+            android:layout_width="@dimen/circle_image_size"
+            android:layout_height="@dimen/circle_image_size"
             android:layout_below="@+id/account_toolbar"
-            android:src="@drawable/avatar"
-            android:layout_marginLeft="15dp"/>
+            android:layout_marginLeft="@dimen/layout_left_margin"
+            android:src="@drawable/avatar" />
+
         <TextView
             android:id="@+id/fio_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/profile_image"
-            android:text="Михайленко Василий Степанович"
-            android:textColor="#fff"
-            android:textSize="20dp"
-            android:layout_marginLeft="15dp"/>
+            android:layout_marginLeft="@dimen/layout_left_margin"
+            android:layout_marginTop="@dimen/layout_left_margin"
+            android:textSize="@dimen/normal_text_size"
+            android:textColor="@color/layout_text_color"
+            tools:text="Михайленко Василий Степанович" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentTop="false"
             android:layout_below="@+id/fio_textview"
-            android:text="25 лет"
-            android:textColor="#fff"
-            android:textSize="17dp"
-            android:layout_marginLeft="15dp" />
+            android:layout_marginBottom="@dimen/layout_left_margin"
+            android:layout_marginLeft="@dimen/layout_left_margin"
+            android:textColor="@color/layout_text_color"
+            android:textSize="@dimen/small_text_size"
+            tools:text="25 лет" />
     </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/persinfo_linear_layout"
         android:layout_width="match_parent"
@@ -51,13 +56,9 @@
         android:layout_weight="1"
         android:background="@color/background"
         android:orientation="vertical"
-        android:paddingLeft="15dp">
+        android:paddingLeft="@dimen/layout_left_margin">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+        <LinearLayout style="@style/pers_layout_line">
 
             <ImageView
                 style="@style/AppTheme.RowImageView"
@@ -65,16 +66,13 @@
 
             <TextView
                 style="@style/AppTheme.RowTextView"
-                android:text="8 (888) 88 - 88 -888" />
+                tools:text="8 (888) 88 - 88 -888" />
         </LinearLayout>
 
         <View style="@style/bottom_border" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            style="@style/pers_layout_line">
 
             <ImageView
                 style="@style/AppTheme.RowImageView"
@@ -82,17 +80,14 @@
 
             <TextView
                 style="@style/AppTheme.RowTextView"
-                android:text="blablabla@mail.ru" />
+                tools:text="blablabla@mail.ru" />
         </LinearLayout>
 
         <View style="@style/bottom_border" />
 
         <LinearLayout
             android:id="@+id/userLine"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            style="@style/pers_layout_line">
 
             <ImageView
                 style="@style/AppTheme.RowImageView"
@@ -100,7 +95,7 @@
 
             <TextView
                 style="@style/AppTheme.RowTextView"
-                android:text="Екатеринбург" />
+                tools:text="Екатеринбург" />
         </LinearLayout>
 
         <View style="@style/bottom_border" />

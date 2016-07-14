@@ -16,8 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/edit_toolbar"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginLeft="@dimen/layout_left_margin"
+        android:layout_marginRight="@dimen/layout_left_margin"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="none">
 
@@ -25,54 +25,56 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/shape"
-                android:layout_width="78dp"
-                android:layout_height="78dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/shape" />
 
-            <TextView
-                android:id="@+id/change_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/shape"
-                android:layout_alignRight="@id/shape"
-                android:layout_alignLeft="@id/shape"
-                android:text="Изменить"
-                android:textAlignment="center" />
+                <ImageView
+                    android:id="@+id/shape"
+                    android:layout_width="@dimen/circle_image_size"
+                    android:layout_height="@dimen/circle_image_size"
+                    android:layout_marginTop="@dimen/shape_margin_top"
+                    android:src="@drawable/shape" />
+
+                <TextView
+                    android:id="@+id/change_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/shape"
+                    android:layout_alignRight="@id/shape"
+                    android:layout_below="@+id/shape"
+                    android:text="@string/change_text_view"
+                    android:textAlignment="center" />
             </RelativeLayout>
 
             <EditText
                 style="@style/personal_edittext"
-                android:hint="Фамилия" />
+                android:hint="@string/surname" />
 
             <EditText
                 style="@style/personal_edittext"
-                android:hint="Имя" />
+                android:hint="@string/name" />
 
             <EditText
                 style="@style/personal_edittext"
-                android:hint="Отчество" />
+                android:hint="@string/father_name" />
 
             <EditText
                 style="@style/personal_edittext"
-                android:hint="Возраст" />
+                android:hint="@string/year" />
 
             <EditText
                 style="@style/personal_edittext"
-                android:hint="Телефон" />
+                android:hint="@string/number" />
 
             <EditText
                 style="@style/personal_edittext"
-                android:hint="Электронная почта" />
+                android:hint="@string/email" />
 
             <EditText
                 style="@style/personal_edittext"
-                android:hint="Город" />
+                android:hint="@string/city" />
 
         </LinearLayout>
         >

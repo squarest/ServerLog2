@@ -29,7 +29,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0.25dp</item>
         <item name="android:layout_marginLeft">40dp</item>
-        <item name="android:background">#fff</item>
+        <item name="android:background">@color/layout_text_color</item>
     </style>
 
     <style name="personal_edittext">
@@ -38,8 +38,16 @@
         <item name="android:layout_weight">1</item>
         <item name="android:layout_marginTop">35dp</item>
         <item name="android:layout_marginBottom">15dp</item>
+        <item name="android:singleLine">true</item>>
 
 
+    </style>
+
+    <style name="pers_layout_line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">horizontal</item>
     </style>
 
 </resources>
