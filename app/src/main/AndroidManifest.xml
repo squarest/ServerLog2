@@ -23,7 +23,9 @@
         </activity>
         <activity android:name=".MenuActivity" />
         <activity android:name=".PersonalAreaActivity" />
-        <activity android:name=".EditActivity"></activity>
+        <activity
+            android:name=".EditActivity"
+            android:windowSoftInputMode="adjustResize"/>
     </application>
 
 </manifest>

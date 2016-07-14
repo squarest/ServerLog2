@@ -4,10 +4,77 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.chudofom.serverlog.EditActivity">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/edit_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/toolbar_background"/>
+        android:background="@color/toolbar_background" />
 
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_toolbar"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/shape"
+                android:layout_width="78dp"
+                android:layout_height="78dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/shape" />
+
+            <TextView
+                android:id="@+id/change_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/shape"
+                android:layout_alignRight="@id/shape"
+                android:layout_alignLeft="@id/shape"
+                android:text="Изменить"
+                android:textAlignment="center" />
+            </RelativeLayout>
+
+            <EditText
+                style="@style/personal_edittext"
+                android:hint="Фамилия" />
+
+            <EditText
+                style="@style/personal_edittext"
+                android:hint="Имя" />
+
+            <EditText
+                style="@style/personal_edittext"
+                android:hint="Отчество" />
+
+            <EditText
+                style="@style/personal_edittext"
+                android:hint="Возраст" />
+
+            <EditText
+                style="@style/personal_edittext"
+                android:hint="Телефон" />
+
+            <EditText
+                style="@style/personal_edittext"
+                android:hint="Электронная почта" />
+
+            <EditText
+                style="@style/personal_edittext"
+                android:hint="Город" />
+
+        </LinearLayout>
+        >
+    </ScrollView>
 </RelativeLayout>

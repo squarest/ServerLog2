@@ -12,9 +12,7 @@
     <style name="AppTheme.RowImageView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_marginLeft">15dp</item>
         <item name="android:layout_marginRight">15dp</item>
-        <item name="android:layout_weight">6</item>
         <item name="android:layout_weight">8</item>
     </style>
 
@@ -26,6 +24,22 @@
         <item name="android:textColor">#fff</item>
         <item name="android:textSize">20dp</item>
     </style>
-</style>
 
-    </resources>
+    <style name="bottom_border">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.25dp</item>
+        <item name="android:layout_marginLeft">40dp</item>
+        <item name="android:background">#fff</item>
+    </style>
+
+    <style name="personal_edittext">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginTop">35dp</item>
+        <item name="android:layout_marginBottom">15dp</item>
+
+
+    </style>
+
+</resources>
