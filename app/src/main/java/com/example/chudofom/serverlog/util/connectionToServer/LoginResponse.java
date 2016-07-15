@@ -1,4 +1,4 @@
-package com.example.chudofom.serverlog.ConnectionToServer;
+package com.example.chudofom.serverlog.util.connectionToServer;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -1,4 +1,4 @@
-package com.example.chudofom.serverlog.ConnectionToServer;
+package com.example.chudofom.serverlog.util.connectionToServer;
 
 import retrofit2.http.Body;
 import rx.Observable;
@@ -22,7 +22,7 @@ public final class ConnectToServer {
 //            _connection = retrofit.create(Api.class);
             Api fakeApi = new Api() {
                 @Override
-                public Observable<LoginResponse> sendInf(@Body UserLogin user) {
+                public Observable<LoginResponse> sendInf(@Body LoginRequest user) {
                     return Observable.just(null);
                 }
             };

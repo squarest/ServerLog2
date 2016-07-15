@@ -1,4 +1,4 @@
-package com.example.chudofom.serverlog.main;
+package com.example.chudofom.serverlog.activities.main;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -10,7 +10,7 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.example.chudofom.serverlog.MenuActivity;
+import com.example.chudofom.serverlog.activities.MenuActivity;
 import com.example.chudofom.serverlog.R;
 import com.example.chudofom.serverlog.databinding.ActivityMainBinding;
 import com.jakewharton.rxbinding.widget.RxTextView;

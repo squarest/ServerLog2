@@ -1,4 +1,4 @@
-package com.example.chudofom.serverlog;
+package com.example.chudofom.serverlog.activities;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.example.chudofom.serverlog.R;
 import com.example.chudofom.serverlog.databinding.ActivityMenuBinding;
+import com.example.chudofom.serverlog.util.MyLocationListener;
+import com.example.chudofom.serverlog.util.UserRepository;
 import com.jakewharton.rxbinding.widget.RxCompoundButton;
 
 import rx.Subscription;
@@ -17,11 +20,13 @@ import rx.Subscription;
 public class MenuActivity extends AppCompatActivity implements LocationListener {
     ActivityMenuBinding binding;
     Subscription subscription;
+    UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        userRepository=new UserRepository(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_menu);
         MyLocationListener locationListener = new MyLocationListener(this, this);
         createToolbar();
@@ -38,8 +43,16 @@ public class MenuActivity extends AppCompatActivity implements LocationListener 
                     }
                 });
         binding.userLine.setOnClickListener(view -> {
-            Intent intent = new Intent(MenuActivity.this, PersonalAreaActivity.class);
-            startActivity(intent);
+            if(userRepository.getUser()!=null) {
+                Intent intent = new Intent(MenuActivity.this, AccountActivity.class);
+                intent.putExtra("userIsFound",true);
+                startActivity(intent);
+            }
+            else {
+                Intent intent = new Intent(MenuActivity.this, EditAccountActivity.class);
+                intent.putExtra("userIsFound",false);
+                startActivity(intent);
+            }
         });
     }
 

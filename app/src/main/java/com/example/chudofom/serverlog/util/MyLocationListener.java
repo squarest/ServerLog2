@@ -1,4 +1,4 @@
-package com.example.chudofom.serverlog;
+package com.example.chudofom.serverlog.util;
 
 /**
  * Created by Chudofom on 12.07.16.
@@ -9,7 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.util.Log;
 
-class MyLocationListener {
+public class MyLocationListener {
 
     LocationManager locationManager;
     LocationListener locationListener;

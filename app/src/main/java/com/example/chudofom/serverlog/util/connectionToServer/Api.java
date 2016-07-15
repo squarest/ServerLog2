@@ -1,4 +1,4 @@
-package com.example.chudofom.serverlog.ConnectionToServer;
+package com.example.chudofom.serverlog.util.connectionToServer;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -9,5 +9,5 @@ import rx.Observable;
  */
 public interface Api {
     @POST("agent/login/")
-    Observable<LoginResponse> sendInf(@Body UserLogin user);
+    Observable<LoginResponse> sendInf(@Body LoginRequest user);
 }

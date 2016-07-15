@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".main.MainActivity"
+            android:name=".activities.main.MainActivity"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,10 +21,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MenuActivity" />
-        <activity android:name=".PersonalAreaActivity" />
+        <activity android:name=".activities.MenuActivity" />
+        <activity android:name=".activities.AccountActivity" />
         <activity
-            android:name=".EditActivity"
+            android:name=".activities.EditAccountActivity"
             android:windowSoftInputMode="adjustResize"/>
     </application>
 

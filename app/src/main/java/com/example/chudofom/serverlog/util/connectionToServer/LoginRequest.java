@@ -1,11 +1,11 @@
-package com.example.chudofom.serverlog.ConnectionToServer;
+package com.example.chudofom.serverlog.util.connectionToServer;
 
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Chudofom on 06.07.16.
  */
-public class UserLogin {
+public class LoginRequest {
     @SerializedName("app_name")
     String mName;
 
@@ -15,7 +15,7 @@ public class UserLogin {
     @SerializedName("device_id")
     String mId;
 
-    public UserLogin(String  name, String key, String id) {
+    public LoginRequest(String  name, String key, String id) {
         this.mName = name;
         this.mKey = key;
         this.mId = id;

@@ -1,4 +1,4 @@
-package com.example.chudofom.serverlog.main;
+package com.example.chudofom.serverlog.activities.main;
 
 /**
  * Created by Chudofom on 06.07.16.

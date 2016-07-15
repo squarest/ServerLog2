@@ -1,9 +1,9 @@
-package com.example.chudofom.serverlog.main;
+package com.example.chudofom.serverlog.activities.main;
 
 import android.util.Log;
 
-import com.example.chudofom.serverlog.ConnectionToServer.ConnectToServer;
-import com.example.chudofom.serverlog.ConnectionToServer.UserLogin;
+import com.example.chudofom.serverlog.util.connectionToServer.ConnectToServer;
+import com.example.chudofom.serverlog.util.connectionToServer.LoginRequest;
 
 import java.util.concurrent.TimeUnit;
 
@@ -24,7 +24,7 @@ public class MainPresenter implements IMainPresenter {
     @Override
     public void butClicked() {
         mainView.showProgress();
-        UserLogin user = new UserLogin("agitator", mainView.getId() + mainView.getPas(), "490fbfe28a7d157a");
+        LoginRequest user = new LoginRequest("agitator", mainView.getId() + mainView.getPas(), "490fbfe28a7d157a");
 
         Subscription connection = ConnectToServer.getInstance().sendInf(user)
                 .delay(5, TimeUnit.SECONDS)
