@@ -61,7 +61,7 @@
                     android:id="@+id/last_name"
                     style="@style/personal_edittext"
                     android:hint="@string/surname"
-                    android:inputType="text"
+                    android:inputType="textPersonName"
                     android:text="@{user.lastName}" />
 
                 <EditText

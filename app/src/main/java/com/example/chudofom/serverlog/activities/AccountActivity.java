@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 
 import com.example.chudofom.serverlog.R;
 import com.example.chudofom.serverlog.databinding.ActivityPersonalAreaBinding;
+import com.example.chudofom.serverlog.model.User;
+import com.example.chudofom.serverlog.util.AgeFormatter;
 import com.example.chudofom.serverlog.util.UserRepository;
 
 public class AccountActivity extends AppCompatActivity {
@@ -20,7 +22,12 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         userRepository = new UserRepository(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_personal_area);
-        binding.setUser(userRepository.getUser());
+        User user = userRepository.getUser();
+        if(user.age!=null)
+        {
+            user.age= AgeFormatter.milisToAge(Long.parseLong(user.age));
+        }
+        binding.setUser(user);
         createToolbar();
     }
 
