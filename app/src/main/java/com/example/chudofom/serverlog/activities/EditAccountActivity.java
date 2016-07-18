@@ -1,5 +1,6 @@
 package com.example.chudofom.serverlog.activities;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
@@ -12,6 +13,8 @@ import com.example.chudofom.serverlog.R;
 import com.example.chudofom.serverlog.databinding.ActivityEditBinding;
 import com.example.chudofom.serverlog.model.User;
 import com.example.chudofom.serverlog.util.UserRepository;
+
+import java.util.Calendar;
 
 public class EditAccountActivity extends AppCompatActivity {
     ActivityEditBinding binding;
@@ -26,31 +29,33 @@ public class EditAccountActivity extends AppCompatActivity {
         userIsFound = getIntent().getExtras().getBoolean("userIsFound");
         if (userIsFound) {
             binding.setUser(userRepository.getUser());
-        }
-        else
-        {
+        } else {
             User user = new User();
             binding.setUser(user);
         }
         createToolbar();
+        final Calendar c = Calendar.getInstance();
+        DatePickerDialog dialog = new DatePickerDialog(this,
+                (datePicker, i, i1, i2) -> binding.age.setText(i2 + "/" + i1 + "/" + i),
+                c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+        dialog.getDatePicker().setMaxDate(c.getTimeInMillis());
+        binding.age.setOnClickListener(view -> dialog.show());
+
     }
 
     private void submit() {
         User user = new User();
         user.firstName = binding.firstName.getText().toString();
         user.lastName = binding.lastName.getText().toString();
-        user.patronymic =binding.patronymic.getText().toString();
+        user.patronymic = binding.patronymic.getText().toString();
         user.age = binding.age.getText().toString();
-        user.phone =binding.phone.getText().toString();
-        user.email =binding.email.getText().toString();
+        user.phone = binding.phone.getText().toString();
+        user.email = binding.email.getText().toString();
         user.city = binding.city.getText().toString();
-        if (userIsFound)
-        {
+        if (userIsFound) {
             userRepository.editUser(user);
             Toast.makeText(EditAccountActivity.this, "Изменено", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
+        } else {
             userRepository.addUser(user);
             Toast.makeText(EditAccountActivity.this, "Добавлено", Toast.LENGTH_SHORT).show();
         }

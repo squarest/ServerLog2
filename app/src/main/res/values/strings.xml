@@ -6,7 +6,7 @@
     <string name="surname">Фамилия</string>
     <string name="name">Имя</string>
     <string name="father_name">Отчество</string>
-    <string name="year">Возраст</string>
+    <string name="year">Дата рождения</string>
     <string name="number">Телефон</string>
     <string name="email">Электронная почта</string>
     <string name="city">Город</string>

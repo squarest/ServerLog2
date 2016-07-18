@@ -79,7 +79,8 @@
                     android:id="@+id/age"
                     style="@style/personal_edittext"
                     android:hint="@string/year"
-                    android:text="@{user.age}" />
+                    android:text="@{user.age}"
+                    android:focusable="false"/>
 
                 <EditText
                     android:id="@+id/phone"
