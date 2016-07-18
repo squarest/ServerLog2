@@ -61,37 +61,42 @@
                     android:id="@+id/last_name"
                     style="@style/personal_edittext"
                     android:hint="@string/surname"
+                    android:inputType="text"
                     android:text="@{user.lastName}" />
 
                 <EditText
                     android:id="@+id/first_name"
                     style="@style/personal_edittext"
+                    android:inputType="textPersonName"
                     android:hint="@string/name"
                     android:text="@{user.firstName}" />
 
                 <EditText
                     android:id="@+id/patronymic"
                     style="@style/personal_edittext"
+                    android:inputType="textPersonName"
                     android:hint="@string/father_name"
                     android:text="@{user.patronymic}" />
 
                 <EditText
                     android:id="@+id/age"
                     style="@style/personal_edittext"
+                    android:focusable="false"
                     android:hint="@string/year"
-                    android:text="@{user.age}"
-                    android:focusable="false"/>
+                    android:text="@{user.age}" />
 
                 <EditText
                     android:id="@+id/phone"
                     style="@style/personal_edittext"
                     android:hint="@string/number"
+                    android:inputType="number"
                     android:text="@{user.phone}" />
 
                 <EditText
                     android:id="@+id/email"
                     style="@style/personal_edittext"
                     android:hint="@string/email"
+                    android:inputType="textEmailAddress"
                     android:text="@{user.email}" />
 
                 <EditText
