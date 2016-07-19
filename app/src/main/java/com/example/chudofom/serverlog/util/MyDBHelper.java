@@ -12,6 +12,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Users.db";
     public static final String TABLE_NAME = "user";
+    public static final String COLUMN_IMAGE_PATH = "imagePath";
     public static final String COLUMN_FIRST_NAME = "firstName";
     public static final String COLUMN_LAST_NAME = "lastName";
     public static final String COLUMN_PATRONYMIC = "patronymic";
@@ -22,10 +23,10 @@ public class MyDBHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_FIRST_NAME + " TEXT," +COLUMN_LAST_NAME + " TEXT," +
-                    COLUMN_PATRONYMIC + " TEXT," + COLUMN_AGE + " TEXT," +
-                    COLUMN_PHONE + " TEXT," + COLUMN_EMAIL + " TEXT," +
-                    COLUMN_CITY + " TEXT)";
+                    COLUMN_IMAGE_PATH + " TEXT," + COLUMN_FIRST_NAME + " TEXT," +
+                    COLUMN_LAST_NAME + " TEXT," + COLUMN_PATRONYMIC + " TEXT," +
+                    COLUMN_AGE + " TEXT," + COLUMN_PHONE + " TEXT," +
+                    COLUMN_EMAIL + " TEXT," + COLUMN_CITY + " TEXT)";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + TABLE_NAME;

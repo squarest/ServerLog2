@@ -61,20 +61,20 @@
                     android:id="@+id/last_name"
                     style="@style/personal_edittext"
                     android:hint="@string/surname"
-                    android:inputType="textPersonName"
+                    android:inputType="textCapSentences"
                     android:text="@{user.lastName}" />
 
                 <EditText
                     android:id="@+id/first_name"
                     style="@style/personal_edittext"
-                    android:inputType="textPersonName"
+                    android:inputType="textCapSentences"
                     android:hint="@string/name"
                     android:text="@{user.firstName}" />
 
                 <EditText
                     android:id="@+id/patronymic"
                     style="@style/personal_edittext"
-                    android:inputType="textPersonName"
+                    android:inputType="textCapSentences"
                     android:hint="@string/father_name"
                     android:text="@{user.patronymic}" />
 
@@ -102,6 +102,7 @@
                 <EditText
                     android:id="@+id/city"
                     style="@style/personal_edittext"
+                    android:inputType="textCapSentences"
                     android:hint="@string/city"
                     android:text="@{user.city}" />
 

@@ -21,6 +21,7 @@ public class UserRepository {
 
     public void addUser(User user) {
         ContentValues values = new ContentValues();
+        values.put(myDBHelper.COLUMN_IMAGE_PATH, user.imagePath);
         values.put(myDBHelper.COLUMN_FIRST_NAME, user.firstName);
         values.put(myDBHelper.COLUMN_LAST_NAME, user.lastName);
         values.put(myDBHelper.COLUMN_PATRONYMIC, user.patronymic);
@@ -38,15 +39,17 @@ public class UserRepository {
     }
 
     public User getUser() {
-        Cursor cursor = sqLiteDatabase.query("user", new String[]{myDBHelper.COLUMN_FIRST_NAME,
-                myDBHelper.COLUMN_LAST_NAME, myDBHelper.COLUMN_PATRONYMIC,
-                myDBHelper.COLUMN_AGE, myDBHelper.COLUMN_PHONE, myDBHelper.COLUMN_EMAIL,
-                myDBHelper.COLUMN_CITY}, null, null, null, null, null);
+        Cursor cursor = sqLiteDatabase.query("user", new String[]{myDBHelper.COLUMN_IMAGE_PATH,
+                myDBHelper.COLUMN_FIRST_NAME, myDBHelper.COLUMN_LAST_NAME,
+                myDBHelper.COLUMN_PATRONYMIC, myDBHelper.COLUMN_AGE, myDBHelper.COLUMN_PHONE,
+                myDBHelper.COLUMN_EMAIL, myDBHelper.COLUMN_CITY}, null, null, null, null, null);
 
         cursor.moveToFirst();
 
         if (cursor.getCount() != 0) {
             User user = new User();
+
+            user.imagePath = cursor.getString(cursor.getColumnIndex(myDBHelper.COLUMN_IMAGE_PATH));
             user.firstName = cursor.getString(cursor.getColumnIndex(myDBHelper.COLUMN_FIRST_NAME));
             user.lastName = cursor.getString(cursor.getColumnIndex(myDBHelper.COLUMN_LAST_NAME));
             user.patronymic = cursor.getString(cursor.getColumnIndex(myDBHelper.COLUMN_PATRONYMIC));
@@ -61,6 +64,7 @@ public class UserRepository {
 
     public void editUser(User user) {
         ContentValues values = new ContentValues();
+        values.put(myDBHelper.COLUMN_IMAGE_PATH, user.imagePath);
         values.put(myDBHelper.COLUMN_FIRST_NAME, user.firstName);
         values.put(myDBHelper.COLUMN_LAST_NAME, user.lastName);
         values.put(myDBHelper.COLUMN_PATRONYMIC, user.patronymic);

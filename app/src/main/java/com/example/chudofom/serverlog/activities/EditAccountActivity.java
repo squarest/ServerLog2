@@ -3,6 +3,7 @@ package com.example.chudofom.serverlog.activities;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import com.example.chudofom.serverlog.R;
 import com.example.chudofom.serverlog.databinding.ActivityEditBinding;
 import com.example.chudofom.serverlog.model.User;
 import com.example.chudofom.serverlog.util.AgeFormatter;
+import com.example.chudofom.serverlog.util.ImagePicker;
 import com.example.chudofom.serverlog.util.UserRepository;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
@@ -27,24 +29,44 @@ public class EditAccountActivity extends AppCompatActivity {
     UserRepository userRepository;
     boolean userIsFound;
     long ageInMillis;
+    String picturePath = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_edit);
+        createToolbar();
+        createDatePickerDialog();
+        validation();
         userRepository = new UserRepository(this);
         userIsFound = getIntent().getExtras().getBoolean("userIsFound");
         User user;
         if (userIsFound) user = userRepository.getUser();
         else user = new User();
-        if(user.age!=null)
-        {
-            user.age=AgeFormatter.milisToAge(Long.parseLong(user.age));
+        if (user.age != null) {
+            user.age = AgeFormatter.milisToAge(Long.parseLong(user.age));
         }
+        if (user.imagePath != null && user.imagePath.length() != 0) {
+            binding.shape.setImageBitmap(BitmapFactory.decodeFile(user.imagePath));
+        } else binding.shape.setImageResource(R.drawable.shape);
         binding.setUser(user);
-        createToolbar();
-        createDatePickerDialog();
-        validation();
+        binding.shape.setOnClickListener(view -> {
+            Intent chooseImageIntent = ImagePicker.getPickImageIntent(this);
+            startActivityForResult(chooseImageIntent, 1);
+
+        });
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1) {
+            picturePath = ImagePicker.getImageFromResult(this, resultCode, data);
+            binding.shape.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+
+        }
 
 
     }
@@ -124,10 +146,14 @@ public class EditAccountActivity extends AppCompatActivity {
 
     private void submit() {
         User user = new User();
+        if (userIsFound) {
+            user = userRepository.getUser();
+        }
+        if (picturePath.length() != 0) user.imagePath = picturePath;
         user.firstName = binding.firstName.getText().toString();
         user.lastName = binding.lastName.getText().toString();
         user.patronymic = binding.patronymic.getText().toString();
-        user.age = String.valueOf(ageInMillis);
+        if (ageInMillis != 0) user.age = String.valueOf(ageInMillis);
         user.phone = binding.phone.getText().toString();
         user.email = binding.email.getText().toString();
         user.city = binding.city.getText().toString();

@@ -4,7 +4,7 @@ package com.example.chudofom.serverlog.model;
  * Created by Chudofom on 14.07.16.
  */
 public class User {
-
+    public String imagePath;
     public String firstName;
     public String lastName;
     public String patronymic;

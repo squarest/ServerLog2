@@ -29,8 +29,7 @@
             android:layout_width="@dimen/circle_image_size"
             android:layout_height="@dimen/circle_image_size"
             android:layout_below="@+id/account_toolbar"
-            android:layout_marginLeft="@dimen/layout_left_margin"
-            android:src="@drawable/avatar" />
+            android:layout_marginLeft="@dimen/layout_left_margin" />
 
         <TextView
             android:id="@+id/fio_textview"
