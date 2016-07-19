@@ -26,8 +26,12 @@ public class MenuActivity extends AppCompatActivity implements LocationListener 
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        userRepository=new UserRepository(this);
+        userRepository = new UserRepository(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_menu);
+        setListeners();
+    }
+
+    private void setListeners() {
         MyLocationListener locationListener = new MyLocationListener(this, this);
         createToolbar();
         binding.setSwitchCheck(false);
@@ -43,14 +47,13 @@ public class MenuActivity extends AppCompatActivity implements LocationListener 
                     }
                 });
         binding.userLine.setOnClickListener(view -> {
-            if(userRepository.getUser()!=null) {
+            if (userRepository.getUser() != null) {
                 Intent intent = new Intent(MenuActivity.this, AccountActivity.class);
-                intent.putExtra("userIsFound",true);
+                intent.putExtra("userIsFound", true);
                 startActivity(intent);
-            }
-            else {
+            } else {
                 Intent intent = new Intent(MenuActivity.this, EditAccountActivity.class);
-                intent.putExtra("userIsFound",false);
+                intent.putExtra("userIsFound", false);
                 startActivity(intent);
             }
         });

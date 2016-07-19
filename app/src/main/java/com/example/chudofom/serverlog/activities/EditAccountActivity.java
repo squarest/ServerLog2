@@ -139,8 +139,6 @@ public class EditAccountActivity extends AppCompatActivity {
                 currentCal.get(Calendar.DAY_OF_MONTH));
 
         dialog.getDatePicker().setMaxDate(currentCal.getTimeInMillis());
-
-
         binding.age.setOnClickListener(view -> dialog.show());
     }
 

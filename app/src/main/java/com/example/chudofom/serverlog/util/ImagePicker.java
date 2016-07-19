@@ -21,6 +21,7 @@ import java.util.List;
 public class ImagePicker {
 
     private static final String TEMP_IMAGE_NAME = "tempImage";
+
     public static Intent getPickImageIntent(Context context) {
         Intent chooserIntent = null;
 
@@ -58,14 +59,14 @@ public class ImagePicker {
     public static String getImageFromResult(Context context, int resultCode,
                                             Intent imageReturnedIntent) {
         File imageFile = getTempFile(context);
-        String picturePath="";
+        String picturePath = "";
         if (resultCode == Activity.RESULT_OK) {
             Uri selectedImage;
             boolean isCamera = (imageReturnedIntent == null ||
                     imageReturnedIntent.getData() == null ||
                     imageReturnedIntent.getData().toString().contains(imageFile.toString()));
             if (isCamera) {     /** CAMERA **/
-                picturePath=imageFile.getPath();
+                picturePath = imageFile.getPath();
             } else {            /** ALBUM **/
                 selectedImage = imageReturnedIntent.getData();
 

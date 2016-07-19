@@ -67,15 +67,15 @@
                 <EditText
                     android:id="@+id/first_name"
                     style="@style/personal_edittext"
-                    android:inputType="textCapSentences"
                     android:hint="@string/name"
+                    android:inputType="textCapSentences"
                     android:text="@{user.firstName}" />
 
                 <EditText
                     android:id="@+id/patronymic"
                     style="@style/personal_edittext"
-                    android:inputType="textCapSentences"
                     android:hint="@string/father_name"
+                    android:inputType="textCapSentences"
                     android:text="@{user.patronymic}" />
 
                 <EditText
@@ -102,8 +102,8 @@
                 <EditText
                     android:id="@+id/city"
                     style="@style/personal_edittext"
-                    android:inputType="textCapSentences"
                     android:hint="@string/city"
+                    android:inputType="textCapSentences"
                     android:text="@{user.city}" />
 
             </LinearLayout>
