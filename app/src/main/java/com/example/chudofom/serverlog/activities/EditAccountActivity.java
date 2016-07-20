@@ -1,16 +1,16 @@
 package com.example.chudofom.serverlog.activities;
 
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -20,14 +20,11 @@ import com.example.chudofom.serverlog.model.User;
 import com.example.chudofom.serverlog.util.AgeFormatter;
 import com.example.chudofom.serverlog.util.ImagePicker;
 import com.example.chudofom.serverlog.util.UserRepository;
-import com.example.chudofom.serverlog.util.connectionToServer.ConnectToServer;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
 import java.util.Calendar;
 
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class EditAccountActivity extends AppCompatActivity {
     ActivityEditBinding binding;
@@ -39,50 +36,67 @@ public class EditAccountActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_edit);
         createToolbar();
         createDatePickerDialog();
         validation();
-//        userRepository = new UserRepository(this);
-//        userIsFound = getIntent().getExtras().getBoolean("userIsFound");
-//        User user;
-//        if (userIsFound) user = userRepository.getUser();
-//        else user = new User();
-//        if (user.age != null) {
-//            user.age = AgeFormatter.milisToAge(Long.parseLong(user.age));
-//        }
-//        if (user.imagePath != null && user.imagePath.length() != 0) {
-//            binding.shape.setImageBitmap(BitmapFactory.decodeFile(user.imagePath));
-//        } else binding.shape.setImageResource(R.drawable.shape);
-//        binding.setUser(user);
-
-
-        ProgressDialog dialog = ProgressDialog.show(EditAccountActivity.this, "",
-                "Loading. Please wait...", false);
-        ConnectToServer.getInstance().getUser()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnTerminate(() -> dialog.dismiss())
-                .subscribe(user ->
-                        {
-                            if (user.age != null) {
-                                user.age = AgeFormatter.milisToAge(Long.parseLong(user.age));
-                            }
-                            binding.setUser(user);
-                        },
-                        throwable ->
-                        {
-                            Log.d("TAG", throwable.getMessage());
-                            Toast.makeText(EditAccountActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                        });
-
+        userRepository = new UserRepository(this);
+        userIsFound = getIntent().getExtras().getBoolean("userIsFound");
+        User user;
+        if (userIsFound) user = userRepository.getUser();
+        else user = new User();
+        if (user.age != null) {
+            user.age = AgeFormatter.milisToAge(Long.parseLong(user.age));
+        }
+        if (user.imagePath != null && user.imagePath.length() != 0) {
+            binding.shape.setImageBitmap(BitmapFactory.decodeFile(user.imagePath));
+        } else binding.shape.setImageResource(R.drawable.shape);
+        binding.setUser(user);
         binding.shape.setOnClickListener(view -> {
             Intent chooseImageIntent = ImagePicker.getPickImageIntent(this);
             startActivityForResult(chooseImageIntent, 1);
-
         });
-    }
 
+    }
+//    public void getFromServer() {
+//        ProgressDialog dialog = ProgressDialog.show(EditAccountActivity.this, "",
+//                "Loading. Please wait...", false);
+//        ConnectToServer.getInstance().getUser()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .doOnTerminate(() -> dialog.dismiss())
+//                .subscribe(user ->
+//                        {
+//                            if (user.age != null) {
+//                                user.age = AgeFormatter.milisToAge(Long.parseLong(user.age));
+//                            }
+//                            binding.setUser(user);
+//                        },
+//                        throwable ->
+//                        {
+//                            Log.d("TAG", throwable.getMessage());
+//                            Toast.makeText(EditAccountActivity.this, "Error", Toast.LENGTH_SHORT).show();
+//                        });
+//    }
+//    public void setToServer(User user)
+//    {
+//        ProgressDialog dialog = ProgressDialog.show(EditAccountActivity.this, "",
+//                "Loading. Please wait...", false);
+//
+//        ConnectToServer.getInstance().setUser(user)
+//                .map(obs -> obs.firstName)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .doOnTerminate(()->dialog.dismiss())
+//                .subscribe(name -> Toast.makeText(EditAccountActivity.this, name, Toast.LENGTH_SHORT).show(),
+//                        throwable ->
+//                        {
+//                            Log.d("TAG", throwable.getMessage());
+//                            Toast.makeText(EditAccountActivity.this, "Error", Toast.LENGTH_SHORT).show();
+//                        });
+//
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -98,25 +112,20 @@ public class EditAccountActivity extends AppCompatActivity {
     }
 
     private void validation() {
-        Observable<Boolean> firstNameObs = RxTextView.textChanges(binding.firstName)
-                .map(charSequence -> charSequence.toString())
-                .map(s -> s.matches("[a-z,A-Z,А-Я,а-я]+"));
-        firstNameObs.subscribe(b -> changeColor(b, binding.firstName));
+        Observable<Boolean> firstNameObs = validateName(binding.firstName);
 
-        Observable<Boolean> lastNameObs = RxTextView.textChanges(binding.lastName)
-                .map(charSequence -> charSequence.toString())
-                .map(s -> s.matches("[a-z,A-Z,А-Я,а-я]+"));
-        lastNameObs.subscribe(b -> changeColor(b, binding.lastName));
+        Observable<Boolean> lastNameObs = validateName(binding.lastName);
 
         Observable<Boolean> patronymicObs = RxTextView.textChanges(binding.patronymic)
                 .map(charSequence -> charSequence.toString())
-                .map(s -> s.matches("[a-z,A-Z,А-Я,а-я]*"));
+                .map(s -> s.matches("[a-zA-ZА-Яа-я]*"));
         patronymicObs.subscribe(b -> changeColor(b, binding.patronymic));
+        ;
 
         Observable<Boolean> emailObs = RxTextView.textChanges(binding.email)
                 .map(charSequence -> charSequence.toString())
                 .map(s -> s.length() > 0)
-                .map(b -> b ? binding.email.getText().toString().matches(".+@.+") : true);
+                .map(b -> b ? binding.email.getText().toString().matches(".+@.+") : !b);
         emailObs.subscribe(b -> changeColor(b, binding.email));
 
         Observable<Boolean> phoneObs = RxTextView.textChanges(binding.phone)
@@ -125,7 +134,7 @@ public class EditAccountActivity extends AppCompatActivity {
 
         Observable<Boolean> cityObs = RxTextView.textChanges(binding.city)
                 .map(charSequence -> charSequence.toString())
-                .map(s -> s.matches("[a-z,A-Z,А-Я,а-я]*"));
+                .map(s -> s.matches("[a-zA-ZА-Яа-я0-9 ,]*"));
         cityObs.subscribe(b -> changeColor(b, binding.city));
         ActionMenuItemView doneButton = (ActionMenuItemView) findViewById(R.id.done_button);
         doneButton.setOnClickListener(view ->
@@ -137,6 +146,15 @@ public class EditAccountActivity extends AppCompatActivity {
         Observable.combineLatest(firstNameObs, lastNameObs, patronymicObs, emailObs, phoneObs, cityObs,
                 (a, b, c, d, e, f) -> a && b && c && d && e && f)
                 .subscribe(b -> doneButton.setEnabled(b));
+    }
+
+    @NonNull
+    private Observable<Boolean> validateName(EditText editText) {
+        Observable<Boolean> nameObs = RxTextView.textChanges(editText)
+                .map(charSequence -> charSequence.toString())
+                .map(s -> s.matches("[a-zA-ZА-Яа-я]+"));
+        nameObs.subscribe(b -> changeColor(b, editText));
+        return nameObs;
     }
 
     private void changeColor(Boolean b, EditText e) {
@@ -152,7 +170,7 @@ public class EditAccountActivity extends AppCompatActivity {
     private void createDatePickerDialog() {
         final Calendar currentCal = Calendar.getInstance();
         final Calendar chosenCal = Calendar.getInstance();
-        DatePickerDialog dialog = new DatePickerDialog(this,
+        DatePickerDialog dialog = new DatePickerDialog(this, R.style.DialogTheme,
                 (datePicker, i, i1, i2) ->
                 {
                     chosenCal.set(Calendar.DAY_OF_MONTH, i2);
@@ -168,11 +186,13 @@ public class EditAccountActivity extends AppCompatActivity {
         binding.age.setOnClickListener(view -> dialog.show());
     }
 
-    private void submit() {
-        ProgressDialog dialog = ProgressDialog.show(EditAccountActivity.this, "",
-                "Loading. Please wait...", false);
 
+    private void submit() {
         User user = new User();
+        if (userIsFound) {
+            user = userRepository.getUser();
+        }
+        if (picturePath.length() != 0) user.imagePath = picturePath;
         user.firstName = binding.firstName.getText().toString();
         user.lastName = binding.lastName.getText().toString();
         user.patronymic = binding.patronymic.getText().toString();
@@ -180,42 +200,14 @@ public class EditAccountActivity extends AppCompatActivity {
         user.phone = binding.phone.getText().toString();
         user.email = binding.email.getText().toString();
         user.city = binding.city.getText().toString();
-
-        ConnectToServer.getInstance().setUser(user)
-                .map(obs -> obs.firstName)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnTerminate(()->dialog.dismiss())
-                .subscribe(name -> Toast.makeText(EditAccountActivity.this, name, Toast.LENGTH_SHORT).show(),
-                        throwable ->
-                        {
-                            Log.d("TAG", throwable.getMessage());
-                            Toast.makeText(EditAccountActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                        });
-
+        if (userIsFound) {
+            userRepository.editUser(user);
+            Toast.makeText(EditAccountActivity.this, "Изменено", Toast.LENGTH_SHORT).show();
+        } else {
+            userRepository.addUser(user);
+            Toast.makeText(EditAccountActivity.this, "Добавлено", Toast.LENGTH_SHORT).show();
+        }
     }
-
-//    private void submit() {
-//        User user = new User();
-//        if (userIsFound) {
-//            user = userRepository.getUser();
-//        }
-//        if (picturePath.length() != 0) user.imagePath = picturePath;
-//        user.firstName = binding.firstName.getText().toString();
-//        user.lastName = binding.lastName.getText().toString();
-//        user.patronymic = binding.patronymic.getText().toString();
-//        if (ageInMillis != 0) user.age = String.valueOf(ageInMillis);
-//        user.phone = binding.phone.getText().toString();
-//        user.email = binding.email.getText().toString();
-//        user.city = binding.city.getText().toString();
-//        if (userIsFound) {
-//            userRepository.editUser(user);
-//            Toast.makeText(EditAccountActivity.this, "Изменено", Toast.LENGTH_SHORT).show();
-//        } else {
-//            userRepository.addUser(user);
-//            Toast.makeText(EditAccountActivity.this, "Добавлено", Toast.LENGTH_SHORT).show();
-//        }
-//    }
 
     private void createToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.edit_toolbar);
