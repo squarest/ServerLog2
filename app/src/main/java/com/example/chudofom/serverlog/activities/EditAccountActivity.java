@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,11 +19,14 @@ import com.example.chudofom.serverlog.model.User;
 import com.example.chudofom.serverlog.util.AgeFormatter;
 import com.example.chudofom.serverlog.util.ImagePicker;
 import com.example.chudofom.serverlog.util.UserRepository;
+import com.example.chudofom.serverlog.util.connectionToServer.ConnectToServer;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
 import java.util.Calendar;
 
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class EditAccountActivity extends AppCompatActivity {
     ActivityEditBinding binding;
@@ -38,18 +42,35 @@ public class EditAccountActivity extends AppCompatActivity {
         createToolbar();
         createDatePickerDialog();
         validation();
-        userRepository = new UserRepository(this);
-        userIsFound = getIntent().getExtras().getBoolean("userIsFound");
-        User user;
-        if (userIsFound) user = userRepository.getUser();
-        else user = new User();
-        if (user.age != null) {
-            user.age = AgeFormatter.milisToAge(Long.parseLong(user.age));
-        }
-        if (user.imagePath != null && user.imagePath.length() != 0) {
-            binding.shape.setImageBitmap(BitmapFactory.decodeFile(user.imagePath));
-        } else binding.shape.setImageResource(R.drawable.shape);
-        binding.setUser(user);
+//        userRepository = new UserRepository(this);
+//        userIsFound = getIntent().getExtras().getBoolean("userIsFound");
+//        User user;
+//        if (userIsFound) user = userRepository.getUser();
+//        else user = new User();
+//        if (user.age != null) {
+//            user.age = AgeFormatter.milisToAge(Long.parseLong(user.age));
+//        }
+//        if (user.imagePath != null && user.imagePath.length() != 0) {
+//            binding.shape.setImageBitmap(BitmapFactory.decodeFile(user.imagePath));
+//        } else binding.shape.setImageResource(R.drawable.shape);
+//        binding.setUser(user);
+
+        ConnectToServer.getInstance().getUser()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(user ->
+                        {
+                            if (user.age != null) {
+                                user.age = AgeFormatter.milisToAge(Long.parseLong(user.age));
+                            }
+                            binding.setUser(user);
+                        },
+                        throwable ->
+                        {
+                            Log.d("TAG", throwable.getMessage());
+                            Toast.makeText(EditAccountActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                        });
+
         binding.shape.setOnClickListener(view -> {
             Intent chooseImageIntent = ImagePicker.getPickImageIntent(this);
             startActivityForResult(chooseImageIntent, 1);
@@ -144,10 +165,7 @@ public class EditAccountActivity extends AppCompatActivity {
 
     private void submit() {
         User user = new User();
-        if (userIsFound) {
-            user = userRepository.getUser();
-        }
-        if (picturePath.length() != 0) user.imagePath = picturePath;
+
         user.firstName = binding.firstName.getText().toString();
         user.lastName = binding.lastName.getText().toString();
         user.patronymic = binding.patronymic.getText().toString();
@@ -155,14 +173,41 @@ public class EditAccountActivity extends AppCompatActivity {
         user.phone = binding.phone.getText().toString();
         user.email = binding.email.getText().toString();
         user.city = binding.city.getText().toString();
-        if (userIsFound) {
-            userRepository.editUser(user);
-            Toast.makeText(EditAccountActivity.this, "Изменено", Toast.LENGTH_SHORT).show();
-        } else {
-            userRepository.addUser(user);
-            Toast.makeText(EditAccountActivity.this, "Добавлено", Toast.LENGTH_SHORT).show();
-        }
+
+        ConnectToServer.getInstance().setUser(user)
+                .map(obs -> obs.firstName)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(name -> Toast.makeText(EditAccountActivity.this, name, Toast.LENGTH_SHORT).show(),
+                        throwable ->
+                        {
+                            Log.d("TAG", throwable.getMessage());
+                            Toast.makeText(EditAccountActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                        });
+
     }
+
+//    private void submit() {
+//        User user = new User();
+//        if (userIsFound) {
+//            user = userRepository.getUser();
+//        }
+//        if (picturePath.length() != 0) user.imagePath = picturePath;
+//        user.firstName = binding.firstName.getText().toString();
+//        user.lastName = binding.lastName.getText().toString();
+//        user.patronymic = binding.patronymic.getText().toString();
+//        if (ageInMillis != 0) user.age = String.valueOf(ageInMillis);
+//        user.phone = binding.phone.getText().toString();
+//        user.email = binding.email.getText().toString();
+//        user.city = binding.city.getText().toString();
+//        if (userIsFound) {
+//            userRepository.editUser(user);
+//            Toast.makeText(EditAccountActivity.this, "Изменено", Toast.LENGTH_SHORT).show();
+//        } else {
+//            userRepository.addUser(user);
+//            Toast.makeText(EditAccountActivity.this, "Добавлено", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
     private void createToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.edit_toolbar);

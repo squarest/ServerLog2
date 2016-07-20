@@ -2,16 +2,18 @@ package com.example.chudofom.serverlog.activities;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.example.chudofom.serverlog.R;
 import com.example.chudofom.serverlog.databinding.ActivityPersonalAreaBinding;
-import com.example.chudofom.serverlog.model.User;
 import com.example.chudofom.serverlog.util.AgeFormatter;
 import com.example.chudofom.serverlog.util.UserRepository;
+import com.example.chudofom.serverlog.util.connectionToServer.ConnectToServer;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class AccountActivity extends AppCompatActivity {
 
@@ -23,15 +25,26 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         userRepository = new UserRepository(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_personal_area);
-        User user = userRepository.getUser();
-        if (user.age != null) {
-            user.age = AgeFormatter.milisToAge(Long.parseLong(user.age));
-        }
+//        User user = userRepository.getUser();
+//        if (user.age != null) {
+//            user.age = AgeFormatter.milisToAge(Long.parseLong(user.age));
+//        }
+//
+//        if (user.imagePath != null && user.imagePath.length() != 0) {
+//            binding.profileImage.setImageBitmap(BitmapFactory.decodeFile(user.imagePath));
+//        } else binding.profileImage.setImageResource(R.drawable.shape);
+//        binding.setUser(user);
+        ConnectToServer.getInstance().getUser()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(user ->
+                {
+                    if (user.age != null) {
+                        user.age = AgeFormatter.milisToAge(Long.parseLong(user.age));
+                    }
+                    binding.setUser(user);
+                });
 
-        if (user.imagePath != null && user.imagePath.length() != 0) {
-            binding.profileImage.setImageBitmap(BitmapFactory.decodeFile(user.imagePath));
-        } else binding.profileImage.setImageResource(R.drawable.shape);
-        binding.setUser(user);
         createToolbar();
     }
 

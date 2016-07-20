@@ -7,7 +7,6 @@ import com.example.chudofom.serverlog.util.connectionToServer.LoginRequest;
 
 import java.util.concurrent.TimeUnit;
 
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -26,7 +25,7 @@ public class MainPresenter implements IMainPresenter {
         mainView.showProgress();
         LoginRequest user = new LoginRequest("agitator", mainView.getId() + mainView.getPas(), "490fbfe28a7d157a");
 
-        Subscription connection = ConnectToServer.getInstance().sendInf(user)
+                ConnectToServer.getInstance().sendInf(user)
                 .delay(5, TimeUnit.SECONDS)
                 .map(obs -> obs.sessionId)
                 .subscribeOn(Schedulers.io())
