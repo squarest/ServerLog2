@@ -5,6 +5,7 @@ import com.example.chudofom.serverlog.model.User;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import rx.Observable;
 
 /**
@@ -17,6 +18,6 @@ public interface Api {
     @GET("secret_user")
     Observable<User> getUser();
 
-    @POST("secret_user")
+    @PUT("secret_user")
     Observable<User> setUser(@Body User user);
 }
