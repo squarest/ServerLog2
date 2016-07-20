@@ -1,6 +1,7 @@
 package com.example.chudofom.serverlog.activities;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.BitmapFactory;
@@ -55,9 +56,13 @@ public class EditAccountActivity extends AppCompatActivity {
 //        } else binding.shape.setImageResource(R.drawable.shape);
 //        binding.setUser(user);
 
+
+        ProgressDialog dialog = ProgressDialog.show(EditAccountActivity.this, "",
+                "Loading. Please wait...", false);
         ConnectToServer.getInstance().getUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnTerminate(() -> dialog.dismiss())
                 .subscribe(user ->
                         {
                             if (user.age != null) {
@@ -164,8 +169,10 @@ public class EditAccountActivity extends AppCompatActivity {
     }
 
     private void submit() {
-        User user = new User();
+        ProgressDialog dialog = ProgressDialog.show(EditAccountActivity.this, "",
+                "Loading. Please wait...", false);
 
+        User user = new User();
         user.firstName = binding.firstName.getText().toString();
         user.lastName = binding.lastName.getText().toString();
         user.patronymic = binding.patronymic.getText().toString();
@@ -178,6 +185,7 @@ public class EditAccountActivity extends AppCompatActivity {
                 .map(obs -> obs.firstName)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnTerminate(()->dialog.dismiss())
                 .subscribe(name -> Toast.makeText(EditAccountActivity.this, name, Toast.LENGTH_SHORT).show(),
                         throwable ->
                         {

@@ -1,5 +1,6 @@
 package com.example.chudofom.serverlog.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import com.example.chudofom.serverlog.databinding.ActivityPersonalAreaBinding;
 import com.example.chudofom.serverlog.util.AgeFormatter;
 import com.example.chudofom.serverlog.util.UserRepository;
 import com.example.chudofom.serverlog.util.connectionToServer.ConnectToServer;
+
+import java.util.concurrent.TimeUnit;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -34,9 +37,14 @@ public class AccountActivity extends AppCompatActivity {
 //            binding.profileImage.setImageBitmap(BitmapFactory.decodeFile(user.imagePath));
 //        } else binding.profileImage.setImageResource(R.drawable.shape);
 //        binding.setUser(user);
+
+        ProgressDialog dialog = ProgressDialog.show(AccountActivity.this, "",
+                "Loading. Please wait...", false);
         ConnectToServer.getInstance().getUser()
+                .delay(5, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnTerminate(()->dialog.dismiss())
                 .subscribe(user ->
                 {
                     if (user.age != null) {
