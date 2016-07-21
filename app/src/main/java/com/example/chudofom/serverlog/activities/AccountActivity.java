@@ -11,7 +11,7 @@ import com.example.chudofom.serverlog.R;
 import com.example.chudofom.serverlog.databinding.ActivityPersonalAreaBinding;
 import com.example.chudofom.serverlog.model.User;
 import com.example.chudofom.serverlog.util.AgeFormatter;
-import com.example.chudofom.serverlog.util.UserRepository;
+import com.example.chudofom.serverlog.util.DB.UserRepository;
 
 public class AccountActivity extends AppCompatActivity {
 

@@ -11,8 +11,8 @@ import android.support.v7.widget.Toolbar;
 
 import com.example.chudofom.serverlog.R;
 import com.example.chudofom.serverlog.databinding.ActivityMenuBinding;
+import com.example.chudofom.serverlog.util.DB.UserRepository;
 import com.example.chudofom.serverlog.util.MyLocationListener;
-import com.example.chudofom.serverlog.util.UserRepository;
 import com.jakewharton.rxbinding.widget.RxCompoundButton;
 
 import rx.Subscription;
@@ -56,6 +56,10 @@ public class MenuActivity extends AppCompatActivity implements LocationListener 
                 intent.putExtra("userIsFound", false);
                 startActivity(intent);
             }
+        });
+        binding.startCamera.setOnClickListener(view -> {
+            Intent intent = new Intent(MenuActivity.this, CameraActivity.class);
+            startActivity(intent);
         });
     }
 

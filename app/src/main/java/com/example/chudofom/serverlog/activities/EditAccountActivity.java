@@ -19,7 +19,7 @@ import com.example.chudofom.serverlog.databinding.ActivityEditBinding;
 import com.example.chudofom.serverlog.model.User;
 import com.example.chudofom.serverlog.util.AgeFormatter;
 import com.example.chudofom.serverlog.util.ImagePicker;
-import com.example.chudofom.serverlog.util.UserRepository;
+import com.example.chudofom.serverlog.util.DB.UserRepository;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
 import java.util.Calendar;

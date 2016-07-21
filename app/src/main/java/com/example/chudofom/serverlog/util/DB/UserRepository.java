@@ -1,4 +1,4 @@
-package com.example.chudofom.serverlog.util;
+package com.example.chudofom.serverlog.util.DB;
 
 import android.content.ContentValues;
 import android.content.Context;
