@@ -22,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/ic_capture"
+        android:background="?attr/selectableItemBackground"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:layout_weight="3"/>

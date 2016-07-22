@@ -38,8 +38,7 @@ public class CameraActivity extends AppCompatActivity {
         captureButton.setOnClickListener(view ->
         {
             mCamera.takePicture(null, null, mPicture);
-            Intent intent = new Intent(CameraActivity.this,PhotoInfoActivity.class);
-            startActivity(intent);
+
         });
     }
 
@@ -71,6 +70,9 @@ public class CameraActivity extends AppCompatActivity {
             FileOutputStream fos = new FileOutputStream(pictureFile);
             fos.write(data);
             fos.close();
+            Intent intent = new Intent(CameraActivity.this,PhotoInfoActivity.class);
+            intent.putExtra("photoPath", pictureFile.getAbsolutePath());
+            startActivity(intent);
         } catch (FileNotFoundException e) {
 
         } catch (IOException e) {

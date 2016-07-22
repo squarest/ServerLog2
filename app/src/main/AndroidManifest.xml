@@ -37,7 +37,9 @@
         <activity
             android:name=".activities.CameraActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.PhotoInfoActivity"></activity>
+        <activity android:name=".activities.PhotoInfoActivity" />
+        <activity android:name=".activities.main.CommentActivity"
+            android:windowSoftInputMode="adjustResize"/>
     </application>
 
 </manifest>
