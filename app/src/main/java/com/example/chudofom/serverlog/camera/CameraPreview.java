@@ -1,4 +1,4 @@
-package com.example.chudofom.serverlog;
+package com.example.chudofom.serverlog.camera;
 
 import android.content.Context;
 import android.view.SurfaceHolder;

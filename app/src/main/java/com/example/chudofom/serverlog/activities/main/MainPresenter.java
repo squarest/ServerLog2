@@ -2,8 +2,8 @@ package com.example.chudofom.serverlog.activities.main;
 
 import android.util.Log;
 
-import com.example.chudofom.serverlog.util.connectionToServer.ConnectToServer;
-import com.example.chudofom.serverlog.util.connectionToServer.LoginRequest;
+import com.example.chudofom.serverlog.connectionToServer.ConnectToServer;
+import com.example.chudofom.serverlog.connectionToServer.LoginRequest;
 
 import java.util.concurrent.TimeUnit;
 

@@ -1,4 +1,4 @@
-package com.example.chudofom.serverlog.util;
+package com.example.chudofom.serverlog.camera;
 
 import android.app.Activity;
 import android.content.Context;

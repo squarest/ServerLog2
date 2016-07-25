@@ -11,8 +11,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.chudofom.serverlog.CameraPreview;
 import com.example.chudofom.serverlog.R;
+import com.example.chudofom.serverlog.camera.CameraPreview;
 
 import java.io.File;
 import java.io.FileNotFoundException;

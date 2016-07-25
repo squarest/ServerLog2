@@ -1,4 +1,4 @@
-package com.example.chudofom.serverlog.util.connectionToServer;
+package com.example.chudofom.serverlog.connectionToServer;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;

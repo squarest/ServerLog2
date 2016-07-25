@@ -11,7 +11,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.example.chudofom.serverlog.R;
 import com.example.chudofom.serverlog.databinding.ActivityMenuBinding;
-import com.example.chudofom.serverlog.util.DB.UserRepository;
+import com.example.chudofom.serverlog.DB.UserRepository;
 import com.example.chudofom.serverlog.util.MyLocationListener;
 import com.jakewharton.rxbinding.widget.RxCompoundButton;
 

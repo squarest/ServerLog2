@@ -1,4 +1,4 @@
-package com.example.chudofom.serverlog.util.connectionToServer;
+package com.example.chudofom.serverlog.connectionToServer;
 
 import com.example.chudofom.serverlog.model.User;
 

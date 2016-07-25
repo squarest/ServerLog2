@@ -1,4 +1,4 @@
-package com.example.chudofom.serverlog.util.DB;
+package com.example.chudofom.serverlog.DB;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
