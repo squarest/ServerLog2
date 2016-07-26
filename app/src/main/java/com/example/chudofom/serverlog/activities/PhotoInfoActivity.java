@@ -1,5 +1,6 @@
 package com.example.chudofom.serverlog.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
@@ -26,15 +27,17 @@ public class PhotoInfoActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_photo_info);
         createToolbar();
         String photoPath = getIntent().getExtras().getString("photoPath");
-        Bitmap photo = rotatePhoto(photoPath);
-        binding.photoView.setImageBitmap(photo);
+        if(photoPath!= null) {
+            Bitmap photo = rotatePhoto(photoPath);
+            binding.photoView.setImageBitmap(photo);
+        }
         long date = System.currentTimeMillis();
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM  HH:MM");
         binding.timeView.setText(sdf.format(date));
         binding.addComment.setOnClickListener(view ->
         {
             Intent intent = new Intent(PhotoInfoActivity.this, CommentActivity.class);
-            intent.putExtra("comment", binding.comment.getText().toString());
+            intent.putExtra("comment", binding.addComment.getText().toString());
             startActivityForResult(intent, 1);
         });
     }
@@ -42,8 +45,8 @@ public class PhotoInfoActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data == null) return;
-        binding.comment.setText(data.getExtras().getString("comment"));
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data == null) return;
+        binding.addComment.setText(data.getExtras().getString("comment"));
     }
 
     private void createToolbar() {
@@ -64,8 +67,7 @@ public class PhotoInfoActivity extends AppCompatActivity {
         Bitmap photo = BitmapFactory.decodeFile(photoPath);
         Matrix matrix = new Matrix();
         matrix.postRotate(90);
-        photo = Bitmap.createBitmap(photo, 0, 0, photo.getWidth(), photo.getHeight(), matrix, true);
-        return photo;
+        return Bitmap.createBitmap(photo, 0, 0, photo.getWidth(), photo.getHeight(), matrix, true);
     }
 
 }

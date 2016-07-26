@@ -1,5 +1,6 @@
 package com.example.chudofom.serverlog.activities;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -14,24 +15,30 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.chudofom.serverlog.DB.UserRepository;
 import com.example.chudofom.serverlog.R;
+import com.example.chudofom.serverlog.camera.ImagePicker;
 import com.example.chudofom.serverlog.databinding.ActivityEditBinding;
 import com.example.chudofom.serverlog.model.User;
 import com.example.chudofom.serverlog.util.AgeFormatter;
-import com.example.chudofom.serverlog.camera.ImagePicker;
-import com.example.chudofom.serverlog.DB.UserRepository;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import rx.Observable;
 
 public class EditAccountActivity extends AppCompatActivity {
+    public static final String USER_IS_FOUND = "userIsFound";
     ActivityEditBinding binding;
     UserRepository userRepository;
     boolean userIsFound;
     long ageInMillis;
-    String picturePath = "";
+    String picturePath;
+    private ActionMenuItemView doneButton;
+
+    List<Observable<Boolean>> obsList = new ArrayList<Observable<Boolean>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,18 +49,10 @@ public class EditAccountActivity extends AppCompatActivity {
         createDatePickerDialog();
         validation();
         userRepository = new UserRepository(this);
-        userIsFound = getIntent().getExtras().getBoolean("userIsFound");
-        User user;
-        if (userIsFound) user = userRepository.getUser();
-        else user = new User();
-        if (user.age != null) {
-            user.age = AgeFormatter.milisToAge(Long.parseLong(user.age));
-        }
-        if (user.imagePath != null && user.imagePath.length() != 0) {
-            binding.shape.setImageBitmap(BitmapFactory.decodeFile(user.imagePath));
-        } else binding.shape.setImageResource(R.drawable.shape);
+        userIsFound = getIntent().getExtras().getBoolean(USER_IS_FOUND);
+        User user = userIsFound ? userRepository.getUser() : new User();
         binding.setUser(user);
-        binding.shape.setOnClickListener(view -> {
+        binding.editPhoto.setOnClickListener(view -> {
             Intent chooseImageIntent = ImagePicker.getPickImageIntent(this);
             startActivityForResult(chooseImageIntent, 1);
         });
@@ -69,7 +68,7 @@ public class EditAccountActivity extends AppCompatActivity {
 //                .subscribe(user ->
 //                        {
 //                            if (user.age != null) {
-//                                user.age = AgeFormatter.milisToAge(Long.parseLong(user.age));
+//                                user.age = AgeFormatter.millsToAge(Long.parseLong(user.age));
 //                            }
 //                            binding.setUser(user);
 //                        },
@@ -102,62 +101,64 @@ public class EditAccountActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1) {
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
             picturePath = ImagePicker.getImageFromResult(this, resultCode, data);
-            binding.shape.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-
+            binding.editPhoto.post(() -> binding.editPhoto.setImageBitmap(BitmapFactory.decodeFile(picturePath)));
         }
 
 
     }
 
     private void validation() {
-        Observable<Boolean> firstNameObs = validateName(binding.firstName);
+        validateName(binding.firstName);
 
-        Observable<Boolean> lastNameObs = validateName(binding.lastName);
+        validateName(binding.lastName);
 
         Observable<Boolean> patronymicObs = RxTextView.textChanges(binding.patronymic)
                 .map(charSequence -> charSequence.toString())
-                .map(s -> s.matches("[a-zA-ZА-Яа-я]*"));
-        patronymicObs.subscribe(b -> changeColor(b, binding.patronymic));
-        ;
+                .map(s -> s.matches("[a-zA-ZА-Яа-я]*"))
+                .map(b -> changeColor(b, binding.patronymic));
+        obsList.add(patronymicObs);
 
         Observable<Boolean> emailObs = RxTextView.textChanges(binding.email)
                 .map(charSequence -> charSequence.toString())
                 .map(s -> s.length() > 0)
-                .map(b -> b ? binding.email.getText().toString().matches(".+@.+") : !b);
-        emailObs.subscribe(b -> changeColor(b, binding.email));
+                .map(b -> b ? binding.email.getText().toString().matches(".+@.+") : !b)
+                .map(b -> changeColor(b, binding.email));
+        obsList.add(emailObs);
 
         Observable<Boolean> phoneObs = RxTextView.textChanges(binding.phone)
-                .map(charSequence -> charSequence.length() > 0);
-        phoneObs.subscribe(b -> changeColor(b, binding.phone));
+                .map(charSequence -> charSequence.length() > 0)
+                .map(b -> changeColor(b, binding.phone));
+        obsList.add(phoneObs);
 
         Observable<Boolean> cityObs = RxTextView.textChanges(binding.city)
                 .map(charSequence -> charSequence.toString())
-                .map(s -> s.matches("[a-zA-ZА-Яа-я0-9 ,]*"));
-        cityObs.subscribe(b -> changeColor(b, binding.city));
-        ActionMenuItemView doneButton = (ActionMenuItemView) findViewById(R.id.done_button);
-        doneButton.setOnClickListener(view ->
+                .map(s -> s.matches("[a-zA-ZА-Яа-я0-9 ,]*"))
+                .map(b -> changeColor(b, binding.city));
+        obsList.add(cityObs);
+
+        Observable.combineLatest(obsList, a ->
         {
-            submit();
-            Intent intent = new Intent(EditAccountActivity.this, AccountActivity.class);
-            startActivity(intent);
-        });
-        Observable.combineLatest(firstNameObs, lastNameObs, patronymicObs, emailObs, phoneObs, cityObs,
-                (a, b, c, d, e, f) -> a && b && c && d && e && f)
+
+            for (int i = 0; i < a.length; i++) {
+                if (!(boolean) a[i]) return false;
+            }
+            return true;
+        })
                 .subscribe(b -> doneButton.setEnabled(b));
     }
 
     @NonNull
-    private Observable<Boolean> validateName(EditText editText) {
+    private void validateName(EditText editText) {
         Observable<Boolean> nameObs = RxTextView.textChanges(editText)
                 .map(charSequence -> charSequence.toString())
-                .map(s -> s.matches("[a-zA-ZА-Яа-я]+"));
-        nameObs.subscribe(b -> changeColor(b, editText));
-        return nameObs;
+                .map(s -> s.matches("[a-zA-ZА-Яа-я]+"))
+                .map(b -> changeColor(b, editText));
+        obsList.add(nameObs);
     }
 
-    private void changeColor(Boolean b, EditText e) {
+    private Boolean changeColor(Boolean b, EditText e) {
         if (!b) {
             e.setTextColor(Color.RED);
             e.setHintTextColor(Color.RED);
@@ -165,6 +166,7 @@ public class EditAccountActivity extends AppCompatActivity {
             e.setTextColor(Color.BLACK);
             e.setHintTextColor(Color.GRAY);
         }
+        return b;
     }
 
     private void createDatePickerDialog() {
@@ -177,7 +179,7 @@ public class EditAccountActivity extends AppCompatActivity {
                     chosenCal.set(Calendar.MONTH, i1);
                     chosenCal.set(Calendar.YEAR, i);
                     ageInMillis = currentCal.getTimeInMillis() - chosenCal.getTimeInMillis();
-                    binding.age.setText(AgeFormatter.milisToAge(ageInMillis));
+                    binding.age.setText(AgeFormatter.millsToAge(ageInMillis));
                 },
                 currentCal.get(Calendar.YEAR), currentCal.get(Calendar.MONTH),
                 currentCal.get(Calendar.DAY_OF_MONTH));
@@ -192,7 +194,7 @@ public class EditAccountActivity extends AppCompatActivity {
         if (userIsFound) {
             user = userRepository.getUser();
         }
-        if (picturePath.length() != 0) user.imagePath = picturePath;
+        if (picturePath != null) user.imagePath = picturePath;
         user.firstName = binding.firstName.getText().toString();
         user.lastName = binding.lastName.getText().toString();
         user.patronymic = binding.patronymic.getText().toString();
@@ -216,5 +218,12 @@ public class EditAccountActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.inflateMenu(R.menu.edit_menu);
+        doneButton = (ActionMenuItemView) findViewById(R.id.done_button);
+        doneButton.setOnClickListener(view ->
+        {
+            submit();
+            Intent intent = new Intent(EditAccountActivity.this, AccountActivity.class);
+            startActivity(intent);
+        });
     }
 }

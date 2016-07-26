@@ -59,7 +59,9 @@ public class UserRepository {
             user.city = cursor.getString(cursor.getColumnIndex(myDBHelper.COLUMN_CITY));
             cursor.close();
             return user;
-        } else return null;
+        } else {
+            return null;
+        }
     }
 
     public void editUser(User user) {

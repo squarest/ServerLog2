@@ -49,11 +49,11 @@ public class MenuActivity extends AppCompatActivity implements LocationListener 
         binding.userLine.setOnClickListener(view -> {
             if (userRepository.getUser() != null) {
                 Intent intent = new Intent(MenuActivity.this, AccountActivity.class);
-                intent.putExtra("userIsFound", true);
+                intent.putExtra(EditAccountActivity.USER_IS_FOUND, true);
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(MenuActivity.this, EditAccountActivity.class);
-                intent.putExtra("userIsFound", false);
+                intent.putExtra(EditAccountActivity.USER_IS_FOUND, false);
                 startActivity(intent);
             }
         });
@@ -102,4 +102,5 @@ public class MenuActivity extends AppCompatActivity implements LocationListener 
     public void onProviderDisabled(String s) {
 
     }
+
 }

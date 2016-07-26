@@ -29,7 +29,9 @@
             android:layout_width="@dimen/circle_image_size"
             android:layout_height="@dimen/circle_image_size"
             android:layout_below="@+id/account_toolbar"
-            android:layout_marginLeft="@dimen/layout_left_margin" />
+            android:layout_marginLeft="@dimen/layout_left_margin"
+            app:imagePath="@{user.imagePath}"
+            app:placeHolder="@{@drawable/shape}"/>
 
         <TextView
             android:id="@+id/fio_textview"
@@ -51,7 +53,7 @@
             android:layout_marginLeft="@dimen/layout_left_margin"
             android:textColor="@color/layout_text_color"
             android:textSize="@dimen/small_text_size"
-            android:text="@{String.valueOf(user.age)}"
+            app:age="@{String.valueOf(user.age)}"
             tools:text="25 лет" />
     </RelativeLayout>
 

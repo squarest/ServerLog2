@@ -4,8 +4,8 @@ package com.example.chudofom.serverlog.util;
  * Created by Chudofom on 18.07.16.
  */
 public class AgeFormatter {
-    public static String milisToAge(Long ageInMillis) {
-        Long MILLIS_IN_YEAR = 31536000000l;
+    public static String millsToAge(long ageInMillis) {
+        long MILLIS_IN_YEAR = 31536000000l;
         ageInMillis /= MILLIS_IN_YEAR;
         String age = String.valueOf(ageInMillis);
 

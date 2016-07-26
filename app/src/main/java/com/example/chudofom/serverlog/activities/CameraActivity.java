@@ -15,7 +15,6 @@ import com.example.chudofom.serverlog.R;
 import com.example.chudofom.serverlog.camera.CameraPreview;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -23,14 +22,29 @@ import java.util.Date;
 
 public class CameraActivity extends AppCompatActivity {
     private android.hardware.Camera mCamera;
-    private CameraPreview mCameraPreview;
+    android.hardware.Camera.PictureCallback mPicture = (data, camera) -> {
+        File pictureFile = getOutputMediaFile();
+        if (pictureFile == null) {
+            return;
+        }
+        try {
+            FileOutputStream fos = new FileOutputStream(pictureFile);
+            fos.write(data);
+            fos.close();
+            Intent intent = new Intent(CameraActivity.this, PhotoInfoActivity.class);
+            intent.putExtra("photoPath", pictureFile.getAbsolutePath());
+            startActivity(intent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
         mCamera = getCameraInstance();
-        mCameraPreview = new CameraPreview(this, mCamera);
+        CameraPreview mCameraPreview = new CameraPreview(this, mCamera);
         FrameLayout preview = (FrameLayout) findViewById(R.id.preview);
         preview.addView(mCameraPreview);
         createToolbar();
@@ -61,23 +75,7 @@ public class CameraActivity extends AppCompatActivity {
         return camera;
     }
 
-    android.hardware.Camera.PictureCallback mPicture = (data, camera) -> {
-        File pictureFile = getOutputMediaFile();
-        if (pictureFile == null) {
-            return;
-        }
-        try {
-            FileOutputStream fos = new FileOutputStream(pictureFile);
-            fos.write(data);
-            fos.close();
-            Intent intent = new Intent(CameraActivity.this,PhotoInfoActivity.class);
-            intent.putExtra("photoPath", pictureFile.getAbsolutePath());
-            startActivity(intent);
-        } catch (FileNotFoundException e) {
 
-        } catch (IOException e) {
-        }
-    };
 
     private static File getOutputMediaFile() {
         File mediaStorageDir = new File(
@@ -92,10 +90,7 @@ public class CameraActivity extends AppCompatActivity {
         }
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
                 .format(new Date());
-        File mediaFile;
-        mediaFile = new File(mediaStorageDir.getPath() + File.separator
+        return new File(mediaStorageDir.getPath() + File.separator
                 + "IMG_" + timeStamp + ".jpg");
-
-        return mediaFile;
     }
 }

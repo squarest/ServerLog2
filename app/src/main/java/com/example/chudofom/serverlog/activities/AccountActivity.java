@@ -2,16 +2,14 @@ package com.example.chudofom.serverlog.activities;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.example.chudofom.serverlog.DB.UserRepository;
 import com.example.chudofom.serverlog.R;
 import com.example.chudofom.serverlog.databinding.ActivityPersonalAreaBinding;
 import com.example.chudofom.serverlog.model.User;
-import com.example.chudofom.serverlog.util.AgeFormatter;
-import com.example.chudofom.serverlog.DB.UserRepository;
 
 public class AccountActivity extends AppCompatActivity {
 
@@ -24,13 +22,6 @@ public class AccountActivity extends AppCompatActivity {
         userRepository = new UserRepository(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_personal_area);
         User user = userRepository.getUser();
-        if (user.age != null) {
-            user.age = AgeFormatter.milisToAge(Long.parseLong(user.age));
-        }
-
-        if (user.imagePath != null && user.imagePath.length() != 0) {
-            binding.profileImage.setImageBitmap(BitmapFactory.decodeFile(user.imagePath));
-        } else binding.profileImage.setImageResource(R.drawable.shape);
         binding.setUser(user);
         createToolbar();
     }
@@ -46,10 +37,15 @@ public class AccountActivity extends AppCompatActivity {
 //                .subscribe(user ->
 //                {
 //                    if (user.age != null) {
-//                        user.age = AgeFormatter.milisToAge(Long.parseLong(user.age));
+//                        user.age = AgeFormatter.millsToAge(Long.parseLong(user.age));
 //                    }
 //                    binding.setUser(user);
-//                });
+//                },
+//                        throwable ->
+//                        {
+//                            Log.d("TAG", throwable.getMessage());
+//                            Toast.makeText(EditAccountActivity.this, "Error", Toast.LENGTH_SHORT).show();
+//                        });
 //
 //    }
 
@@ -66,8 +62,8 @@ public class AccountActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(view ->
         {
             Intent intent = new Intent(AccountActivity.this, EditAccountActivity.class);
-            if (userRepository.getUser() != null) intent.putExtra("userIsFound", true);
-            else intent.putExtra("userIsFound", false);
+            if (userRepository.getUser() != null) intent.putExtra(EditAccountActivity.USER_IS_FOUND, true);
+            else intent.putExtra(EditAccountActivity.USER_IS_FOUND, false);
             startActivity(intent);
             return true;
         });
