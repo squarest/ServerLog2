@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
@@ -18,16 +17,15 @@ import com.example.chudofom.serverlog.databinding.ActivityPhotoInfoBinding;
 
 import java.text.SimpleDateFormat;
 
-public class PhotoInfoActivity extends AppCompatActivity {
-    ActivityPhotoInfoBinding binding;
+public class PhotoInfoActivity extends BaseActivity {
+    private ActivityPhotoInfoBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_photo_info);
-        createToolbar();
+        super.onCreate(savedInstanceState);
         String photoPath = getIntent().getExtras().getString("photoPath");
-        if(photoPath!= null) {
+        if (photoPath != null) {
             Bitmap photo = rotatePhoto(photoPath);
             binding.photoView.setImageBitmap(photo);
         }
@@ -49,7 +47,7 @@ public class PhotoInfoActivity extends AppCompatActivity {
         binding.addComment.setText(data.getExtras().getString("comment"));
     }
 
-    private void createToolbar() {
+    protected void inflateToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.camera_toolbar);
         toolbar.setTitle("Отчет");
         toolbar.inflateMenu(R.menu.report_menu);

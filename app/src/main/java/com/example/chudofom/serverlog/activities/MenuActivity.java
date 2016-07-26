@@ -6,36 +6,32 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.example.chudofom.serverlog.DB.UserRepository;
 import com.example.chudofom.serverlog.R;
 import com.example.chudofom.serverlog.databinding.ActivityMenuBinding;
-import com.example.chudofom.serverlog.DB.UserRepository;
 import com.example.chudofom.serverlog.util.MyLocationListener;
 import com.jakewharton.rxbinding.widget.RxCompoundButton;
 
 import rx.Subscription;
 
-public class MenuActivity extends AppCompatActivity implements LocationListener {
-    ActivityMenuBinding binding;
-    Subscription subscription;
-    UserRepository userRepository;
+public class MenuActivity extends BaseActivity implements LocationListener {
+    private ActivityMenuBinding binding;
+    private UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_menu);
         super.onCreate(savedInstanceState);
         userRepository = new UserRepository(this);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_menu);
         setListeners();
     }
 
     private void setListeners() {
         MyLocationListener locationListener = new MyLocationListener(this, this);
-        createToolbar();
         binding.setSwitchCheck(false);
-        subscription = RxCompoundButton.checkedChanges(binding.gpsSwitch)
+        Subscription subscription = RxCompoundButton.checkedChanges(binding.gpsSwitch)
                 .subscribe(b -> {
                     if (b) {
                         binding.setGpsStatus("Соединение...");
@@ -46,6 +42,7 @@ public class MenuActivity extends AppCompatActivity implements LocationListener 
                         binding.setGpsStatus("Включить маяк");
                     }
                 });
+        addSubscription(subscription);
         binding.userLine.setOnClickListener(view -> {
             if (userRepository.getUser() != null) {
                 Intent intent = new Intent(MenuActivity.this, AccountActivity.class);
@@ -63,7 +60,8 @@ public class MenuActivity extends AppCompatActivity implements LocationListener 
         });
     }
 
-    private void createToolbar() {
+    @Override
+    protected void inflateToolbar() {
         Toolbar toolbar = binding.toolbar;
         toolbar.setTitle("Меню");
         toolbar.setNavigationIcon(R.drawable.ic_back);
@@ -75,12 +73,6 @@ public class MenuActivity extends AppCompatActivity implements LocationListener 
         String locationOutput = String.format("Latitude= %15f Longitude= %15f",
                 location.getLatitude(), location.getLongitude());
         binding.setGpsStatus(locationOutput);
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (subscription != null) subscription.unsubscribe();
-        super.onDestroy();
     }
 
     @Override

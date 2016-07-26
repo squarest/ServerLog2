@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.FrameLayout;
@@ -20,7 +19,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class CameraActivity extends AppCompatActivity {
+public class CameraActivity extends BaseActivity{
     private android.hardware.Camera mCamera;
     android.hardware.Camera.PictureCallback mPicture = (data, camera) -> {
         File pictureFile = getOutputMediaFile();
@@ -41,13 +40,12 @@ public class CameraActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
+        super.onCreate(savedInstanceState);
         mCamera = getCameraInstance();
         CameraPreview mCameraPreview = new CameraPreview(this, mCamera);
         FrameLayout preview = (FrameLayout) findViewById(R.id.preview);
         preview.addView(mCameraPreview);
-        createToolbar();
         ImageView captureButton = (ImageView) findViewById(R.id.capture_button);
         captureButton.setOnClickListener(view ->
         {
@@ -56,7 +54,7 @@ public class CameraActivity extends AppCompatActivity {
         });
     }
 
-    private void createToolbar() {
+    protected void inflateToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.camera_toolbar);
         toolbar.setTitle("Сделать снимок");
         toolbar.setNavigationIcon(R.drawable.ic_back);

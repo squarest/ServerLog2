@@ -7,8 +7,6 @@ import android.databinding.DataBindingUtil;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.Toolbar;
 import android.view.WindowManager;
@@ -28,24 +26,23 @@ import java.util.Calendar;
 import java.util.List;
 
 import rx.Observable;
+import rx.Subscription;
 
-public class EditAccountActivity extends AppCompatActivity {
+public class EditAccountActivity extends BaseActivity {
     public static final String USER_IS_FOUND = "userIsFound";
-    ActivityEditBinding binding;
-    UserRepository userRepository;
-    boolean userIsFound;
-    long ageInMillis;
-    String picturePath;
+    private ActivityEditBinding binding;
+    private UserRepository userRepository;
+    private boolean userIsFound;
+    private long ageInMillis;
+    private String picturePath;
     private ActionMenuItemView doneButton;
 
-    List<Observable<Boolean>> obsList = new ArrayList<Observable<Boolean>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_edit);
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_edit);
-        createToolbar();
         createDatePickerDialog();
         validation();
         userRepository = new UserRepository(this);
@@ -56,7 +53,6 @@ public class EditAccountActivity extends AppCompatActivity {
             Intent chooseImageIntent = ImagePicker.getPickImageIntent(this);
             startActivityForResult(chooseImageIntent, 1);
         });
-
     }
 //    public void getFromServer() {
 //        ProgressDialog dialog = ProgressDialog.show(EditAccountActivity.this, "",
@@ -103,62 +99,65 @@ public class EditAccountActivity extends AppCompatActivity {
 
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
             picturePath = ImagePicker.getImageFromResult(this, resultCode, data);
-            binding.editPhoto.post(() -> binding.editPhoto.setImageBitmap(BitmapFactory.decodeFile(picturePath)));
+            binding.editPhoto.post(() ->
+                    binding.editPhoto.setImageBitmap(BitmapFactory.decodeFile(picturePath)));
         }
 
 
     }
 
     private void validation() {
-        validateName(binding.firstName);
+        List<Observable<Boolean>> obsList = new ArrayList<Observable<Boolean>>();
+        Observable<Boolean> firstNameObs = validateName(binding.firstName);
+        obsList.add(firstNameObs);
 
-        validateName(binding.lastName);
+        Observable<Boolean> lastNameObs = validateName(binding.lastName);
+        obsList.add(lastNameObs);
 
         Observable<Boolean> patronymicObs = RxTextView.textChanges(binding.patronymic)
-                .map(charSequence -> charSequence.toString())
+                .map(CharSequence::toString)
                 .map(s -> s.matches("[a-zA-ZА-Яа-я]*"))
-                .map(b -> changeColor(b, binding.patronymic));
+                .doOnNext(b -> changeColor(b, binding.patronymic));
         obsList.add(patronymicObs);
 
         Observable<Boolean> emailObs = RxTextView.textChanges(binding.email)
-                .map(charSequence -> charSequence.toString())
+                .map(CharSequence::toString)
                 .map(s -> s.length() > 0)
                 .map(b -> b ? binding.email.getText().toString().matches(".+@.+") : !b)
-                .map(b -> changeColor(b, binding.email));
+                .doOnNext(b -> changeColor(b, binding.email));
         obsList.add(emailObs);
 
         Observable<Boolean> phoneObs = RxTextView.textChanges(binding.phone)
                 .map(charSequence -> charSequence.length() > 0)
-                .map(b -> changeColor(b, binding.phone));
+                .doOnNext(b -> changeColor(b, binding.phone));
         obsList.add(phoneObs);
 
         Observable<Boolean> cityObs = RxTextView.textChanges(binding.city)
-                .map(charSequence -> charSequence.toString())
+                .map(CharSequence::toString)
                 .map(s -> s.matches("[a-zA-ZА-Яа-я0-9 ,]*"))
-                .map(b -> changeColor(b, binding.city));
+                .doOnNext(b -> changeColor(b, binding.city));
         obsList.add(cityObs);
 
-        Observable.combineLatest(obsList, a ->
+        Subscription subscription = Observable.combineLatest(obsList, a ->
         {
 
-            for (int i = 0; i < a.length; i++) {
-                if (!(boolean) a[i]) return false;
+            for (Object anA : a) {
+                if (!(boolean) anA) return false;
             }
             return true;
         })
                 .subscribe(b -> doneButton.setEnabled(b));
+        addSubscription(subscription);
     }
 
-    @NonNull
-    private void validateName(EditText editText) {
-        Observable<Boolean> nameObs = RxTextView.textChanges(editText)
-                .map(charSequence -> charSequence.toString())
+    private Observable<Boolean> validateName(EditText editText) {
+        return RxTextView.textChanges(editText)
+                .map(CharSequence::toString)
                 .map(s -> s.matches("[a-zA-ZА-Яа-я]+"))
-                .map(b -> changeColor(b, editText));
-        obsList.add(nameObs);
+                .doOnNext(b -> changeColor(b, editText));
     }
 
-    private Boolean changeColor(Boolean b, EditText e) {
+    private boolean changeColor(boolean b, EditText e) {
         if (!b) {
             e.setTextColor(Color.RED);
             e.setHintTextColor(Color.RED);
@@ -211,7 +210,7 @@ public class EditAccountActivity extends AppCompatActivity {
         }
     }
 
-    private void createToolbar() {
+    protected void inflateToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.edit_toolbar);
         toolbar.setTitle("Редактировать профиль");
         toolbar.setNavigationIcon(R.drawable.ic_back);

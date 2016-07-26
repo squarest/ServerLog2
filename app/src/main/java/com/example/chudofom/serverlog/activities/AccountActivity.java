@@ -3,7 +3,6 @@ package com.example.chudofom.serverlog.activities;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.example.chudofom.serverlog.DB.UserRepository;
@@ -11,19 +10,19 @@ import com.example.chudofom.serverlog.R;
 import com.example.chudofom.serverlog.databinding.ActivityPersonalAreaBinding;
 import com.example.chudofom.serverlog.model.User;
 
-public class AccountActivity extends AppCompatActivity {
+public class AccountActivity extends BaseActivity {
 
-    ActivityPersonalAreaBinding binding;
-    UserRepository userRepository;
+    private ActivityPersonalAreaBinding binding;
+    private UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_personal_area);
         super.onCreate(savedInstanceState);
         userRepository = new UserRepository(this);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_personal_area);
         User user = userRepository.getUser();
         binding.setUser(user);
-        createToolbar();
     }
 
 //    public void getFromServer(){
@@ -49,7 +48,7 @@ public class AccountActivity extends AppCompatActivity {
 //
 //    }
 
-    private void createToolbar() {
+    protected void inflateToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.account_toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_menu);
         toolbar.setNavigationOnClickListener(view ->

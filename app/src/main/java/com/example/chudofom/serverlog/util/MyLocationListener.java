@@ -11,8 +11,8 @@ import android.util.Log;
 
 public class MyLocationListener {
 
-    LocationManager locationManager;
-    LocationListener locationListener;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
 
     public MyLocationListener(Context context, LocationListener locListener) {
         this.locationListener = locListener;

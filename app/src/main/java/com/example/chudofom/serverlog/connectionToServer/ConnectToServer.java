@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Chudofom on 07.07.16.
  */
 public final class ConnectToServer {
-    public static Api _connection = null;
+    private static Api _connection = null;
 
     private void ConnectToServer() {
     }

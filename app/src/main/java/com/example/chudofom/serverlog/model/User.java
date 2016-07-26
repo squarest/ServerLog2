@@ -12,11 +12,4 @@ public class User {
     public String phone;
     public String email;
     public String city;
-
-
-
-    public User() {
-    }
-
-
 }
